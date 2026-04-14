@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Search, Instagram, Facebook, Twitter, Mail, Phone, MapPin, MessageCircle, Download, X, ArrowRight, Menu, Star, ChevronUp, ChevronRight } from "lucide-react";
+import { 
+  Search, Instagram, Facebook, Twitter, Mail, Phone, MapPin, 
+  MessageCircle, Download, X, ArrowRight, Menu, Star, 
+  ChevronUp, ChevronRight, Sparkles 
+} from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { products } from "../data/products";
 
 export const AnimatedButton = ({ children, className, variant = "black", ...props }: any) => {
   const variants: any = {
@@ -12,7 +17,7 @@ export const AnimatedButton = ({ children, className, variant = "black", ...prop
   };
 
   return (
-    <motion.button 
+    <motion.button
       whileHover="hover"
       initial="initial"
       className={`relative px-6 md:px-8 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-medium overflow-hidden group ${variants[variant]} ${className}`}
@@ -27,8 +32,8 @@ export const AnimatedButton = ({ children, className, variant = "black", ...prop
           transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
           className="flex flex-col"
         >
-          <span className="flex items-center justify-center h-5 whitespace-nowrap">{children}</span>
-          <span className="flex items-center justify-center h-5 whitespace-nowrap">{children}</span>
+          <span className="flex items-center justify-center gap-2.5 h-5 whitespace-nowrap">{children}</span>
+          <span className="flex items-center justify-center gap-2.5 h-5 whitespace-nowrap">{children}</span>
         </motion.div>
       </div>
     </motion.button>
@@ -74,7 +79,7 @@ export const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
-  const isAboutPage = location.pathname === "/about";
+  const forceSolid = location.pathname.startsWith("/product/") || location.pathname === "/legal";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -97,23 +102,30 @@ export const Navbar = () => {
     }
   };
 
-  const navScrolled = isScrolled;
+  const navScrolled = isScrolled || forceSolid;
 
   const [isDownloading, setIsDownloading] = useState(false);
 
   const handleDownload = () => {
     setIsDownloading(true);
+    // Real download trigger
+    const link = document.createElement('a');
+    link.href = '/SK_Enterprises_Catalog.pdf';
+    link.download = 'SK_Enterprises_Catalog.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
     setTimeout(() => {
       setIsDownloading(false);
-      alert("Catalog download started! (Simulation)");
-    }, 2000);
+    }, 1000);
   };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div 
+          <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -126,7 +138,7 @@ export const Navbar = () => {
                 <X size={28} />
               </button>
             </div>
-            
+
             <div className="flex flex-col gap-5 text-2xl md:text-3xl font-medium tracking-tighter overflow-y-auto py-4">
               <Link to="/" className="hover:text-white/60 transition-colors">Home</Link>
               <Link to="/about" className="hover:text-white/60 transition-colors">About Us</Link>
@@ -140,10 +152,10 @@ export const Navbar = () => {
             <div className="mt-auto pt-8 flex flex-col gap-6">
               <div className="flex flex-col gap-1">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Quick Contact</span>
-                <a href="tel:+9198XXXXXXXX" className="text-lg font-bold tracking-tight">+91 98XX XXX XXX</a>
+                <a href="tel:+919354092323" className="text-lg font-bold tracking-tight">+91 93540 92323</a>
               </div>
-              <AnimatedButton 
-                variant="white" 
+              <AnimatedButton
+                variant="white"
                 className="w-full py-4 text-base font-bold"
                 onClick={handleDownload}
                 disabled={isDownloading}
@@ -157,30 +169,79 @@ export const Navbar = () => {
 
       <AnimatePresence>
         {isSearchOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -100 }}
             className="fixed inset-0 z-[70] bg-white flex flex-col items-center justify-center px-6"
           >
-            <button 
+            <button
               onClick={() => setIsSearchOpen(false)}
               className="absolute top-10 right-10 p-4 hover:bg-gallery rounded-full transition-colors"
             >
               <X size={32} />
             </button>
-            
+
             <form onSubmit={handleSearch} className="w-full max-w-4xl flex flex-col gap-8">
               <span className="text-sm font-bold uppercase tracking-[0.3em] text-black/30 text-center">Search our wholesale catalog</span>
               <div className="relative">
-                <input 
+                <input
                   autoFocus
-                  type="text" 
+                  type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Try 'Formal Shirt'..."
                   className="w-full bg-transparent border-b-2 border-black/10 py-8 text-4xl md:text-6xl font-medium tracking-tighter focus:outline-none focus:border-black transition-colors placeholder:text-black/5"
                 />
+                
+                {/* Suggestions Dropdown */}
+                <AnimatePresence>
+                  {searchQuery.trim().length > 1 && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute left-0 right-0 top-full mt-4 bg-white border border-black/5 shadow-2xl rounded-3xl overflow-hidden z-20"
+                    >
+                      <div className="flex flex-col">
+                        <div className="px-6 py-4 bg-gallery/50 border-b border-black/5 flex justify-between items-center">
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-black/30">Top Matches</span>
+                          <span className="text-[10px] font-bold text-black/20">{products.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase())).length} Results</span>
+                        </div>
+                        <div className="max-h-[400px] overflow-y-auto">
+                          {products
+                            .filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()))
+                            .slice(0, 5)
+                            .map((product) => (
+                              <Link 
+                                key={product.id}
+                                to={`/product/${product.id}`}
+                                onClick={() => setIsSearchOpen(false)}
+                                className="flex items-center gap-6 p-4 hover:bg-gallery transition-colors group"
+                              >
+                                <div className="w-16 h-20 bg-gallery rounded-xl overflow-hidden shrink-0">
+                                  <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
+                                </div>
+                                <div className="flex flex-col gap-1 flex-1">
+                                  <span className="text-[10px] font-bold uppercase tracking-widest text-black/30">{product.category}</span>
+                                  <h4 className="font-bold text-lg group-hover:text-black transition-colors">{product.title}</h4>
+                                  <span className="text-sm font-medium">₹{product.price} <span className="text-black/20 text-xs">Wholesale</span></span>
+                                </div>
+                                <ChevronRight size={20} className="text-black/10 group-hover:text-black transition-all" />
+                              </Link>
+                            ))}
+                        </div>
+                        <button 
+                          type="submit"
+                          className="w-full py-4 text-center text-sm font-bold border-t border-black/5 hover:bg-black hover:text-white transition-all flex items-center justify-center gap-2"
+                        >
+                          View all matches for "{searchQuery}" <ArrowRight size={14} />
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
                 <button type="submit" className="absolute right-0 bottom-8 p-4 hover:scale-110 transition-transform">
                   <ArrowRight size={48} />
                 </button>
@@ -205,7 +266,7 @@ export const Navbar = () => {
           ))}
         </div>
       </div>
-      
+
       {/* Main Nav */}
       <nav className={`w-full py-4 px-4 md:px-12 flex items-center transition-all duration-500 ease-in-out ${navScrolled ? 'bg-white shadow-sm' : 'bg-transparent'}`}>
         <div className="flex-1">
@@ -219,16 +280,16 @@ export const Navbar = () => {
           <RollingLink to="/wholesale-inquiry" className={navScrolled ? 'hover:text-black' : 'hover:text-white'}>Wholesale Inquiry</RollingLink>
           <RollingLink to="/contact" className={navScrolled ? 'hover:text-black' : 'hover:text-white'}>Contact</RollingLink>
         </div>
-        
+
         <div className="flex-1 flex items-center justify-end gap-4">
-          <button 
+          <button
             onClick={() => setIsMobileMenuOpen(true)}
             className={`md:hidden p-2.5 rounded-full transition-all duration-500 ${navScrolled ? 'bg-black/5 text-black hover:bg-black/10' : 'bg-white/15 backdrop-blur-md text-white hover:bg-white/20'}`}
           >
             <Menu size={18} />
           </button>
-          <AnimatedButton 
-            variant={navScrolled ? "outline" : "transparent"} 
+          <AnimatedButton
+            variant={navScrolled ? "outline" : "transparent"}
             className={`hidden lg:flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold transition-all duration-500 ${navScrolled ? "border-black/10 hover:bg-black/5" : ""}`}
             onClick={handleDownload}
             disabled={isDownloading}
@@ -237,7 +298,7 @@ export const Navbar = () => {
               <Download size={14} /> {isDownloading ? "Downloading..." : "Catalog PDF"}
             </div>
           </AnimatedButton>
-          <button 
+          <button
             onClick={() => setIsSearchOpen(true)}
             className={`p-2.5 rounded-full transition-all duration-500 ${navScrolled ? 'bg-black/5 text-black hover:bg-black/10' : 'bg-white/15 backdrop-blur-md text-white hover:bg-white/20'}`}
           >
@@ -250,10 +311,10 @@ export const Navbar = () => {
           </Link>
         </div>
       </nav>
-      
+
       {/* WhatsApp Floating Button */}
       <motion.a
-        href="https://wa.me/9198XXXXXXXX"
+        href="https://wa.me/919354092323"
         target="_blank"
         rel="noopener noreferrer"
         initial={{ scale: 0, opacity: 0 }}
@@ -274,9 +335,29 @@ export const Navbar = () => {
 export const Footer = () => {
   const [subscribed, setSubscribed] = useState(false);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubscribed(true);
+    // Get the email from the form input
+    const form = e.target as HTMLFormElement;
+    const email = (form.elements[0] as HTMLInputElement).value;
+    
+    try {
+      const response = await fetch("https://formspree.io/f/xjgjkodn", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          email,
+          _subject: "New Newsletter Subscription",
+          message: "User subscribed to wholesale price list updates."
+        })
+      });
+
+      if (response.ok) {
+        setSubscribed(true);
+      }
+    } catch (error) {
+      console.error("Subscription failed", error);
+    }
   };
 
   return (
@@ -298,9 +379,9 @@ export const Footer = () => {
             </div>
           ) : (
             <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row w-full max-w-lg gap-4 bg-mine-shaft p-2 rounded-[24px] sm:rounded-full border border-white/5">
-              <input 
+              <input
                 required
-                type="email" 
+                type="email"
                 placeholder="Enter your email"
                 className="flex-1 bg-transparent rounded-full px-6 py-4 text-base font-light text-white placeholder:text-white/30 focus:outline-none"
               />
@@ -310,24 +391,24 @@ export const Footer = () => {
             </form>
           )}
         </div>
-        
+
         <div className="h-px bg-white/10 w-full" />
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 md:gap-20">
           <div className="flex flex-col gap-6 md:gap-8">
-            <div className="text-2xl md:text-3xl font-bold tracking-tighter uppercase">S.K Enterprises</div>
-            <p className="text-white/60 text-base md:text-lg font-medium leading-relaxed">
+            <div className="text-xl md:text-2xl font-bold tracking-tighter uppercase">S.K Enterprises</div>
+            <p className="text-white/60 text-sm md:text-base font-medium leading-relaxed">
               Specializing in premium wholesale men's shirts for over 15 years. Quality you can trust, prices that help you grow.
             </p>
             <div className="flex flex-col gap-2">
-              <span className="text-sm text-white/40 uppercase tracking-widest font-bold">Business Hours</span>
-              <span className="text-white/80">Mon - Sat: 10 AM – 7 PM</span>
+              <span className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-bold">Business Hours</span>
+              <span className="text-white/80 text-sm">Mon - Sat: 10 AM – 7 PM</span>
             </div>
           </div>
-          
+
           <div className="flex flex-col gap-8">
-            <h4 className="text-xl font-semibold tracking-tight">Quick Links</h4>
-            <div className="flex flex-col gap-4 text-white/40 text-lg font-medium">
+            <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-white/80">Quick Links</h4>
+            <div className="flex flex-col gap-4 text-white/40 text-sm font-medium">
               <Link to="/" className="hover:text-white transition-colors">Home</Link>
               <Link to="/about" className="hover:text-white transition-colors">About Us</Link>
               <Link to="/catalog" className="hover:text-white transition-colors">Product Catalog</Link>
@@ -337,53 +418,60 @@ export const Footer = () => {
               <Link to="/contact" className="hover:text-white transition-colors">Contact</Link>
             </div>
           </div>
-          
+
           <div className="flex flex-col gap-8">
-            <h4 className="text-xl font-semibold tracking-tight">Follow us:</h4>
-            <div className="flex flex-col gap-4 text-white/40 text-lg font-medium">
-              <a href="#" className="flex items-center gap-3 hover:text-white transition-colors">
-                <Instagram size={20} /> Instagram
+            <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-white/80">Follow us:</h4>
+            <div className="flex flex-col gap-4 text-white/40 text-sm font-medium">
+              <a href="#!" className="flex items-center gap-3 hover:text-white transition-colors">
+                <Instagram size={18} /> Instagram
               </a>
-              <a href="#" className="flex items-center gap-3 hover:text-white transition-colors">
-                <Facebook size={20} /> Facebook
+              <a href="#!" className="flex items-center gap-3 hover:text-white transition-colors">
+                <Facebook size={18} /> Facebook
               </a>
-              <a href="#" className="flex items-center gap-3 hover:text-white transition-colors">
-                <Twitter size={20} /> Twitter
+              <a href="#!" className="flex items-center gap-3 hover:text-white transition-colors">
+                <Twitter size={18} /> Twitter
               </a>
             </div>
           </div>
-          
+
           <div className="flex flex-col gap-8">
-            <h4 className="text-xl font-semibold tracking-tight">Get in touch</h4>
-            <div className="flex flex-col gap-6 text-white/40 text-lg font-medium">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-white/5 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10">
-                  <Mail size={18} />
+            <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-white/80">Get in touch</h4>
+            <div className="flex flex-col gap-6 text-white/40 text-sm font-medium">
+              <div className="flex items-center gap-4 group">
+                <div className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/5 group-hover:border-white/20 transition-all shrink-0">
+                  <Mail size={16} className="text-white/60 group-hover:text-white transition-colors" />
                 </div>
-                <span className="hover:text-white transition-colors cursor-pointer">sales@skenterprises.com</span>
+                <div className="flex flex-col">
+                  <span className="text-white hover:text-white/80 transition-colors cursor-pointer break-all">aranavk08@gmail.com</span>
+                </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-white/5 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10">
-                  <Phone size={18} />
+              <div className="flex items-center gap-4 group">
+                <div className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/5 group-hover:border-white/20 transition-all shrink-0">
+                  <Phone size={16} className="text-white/60 group-hover:text-white transition-colors" />
                 </div>
-                <span className="hover:text-white transition-colors cursor-pointer">+91 98XXX XXXXX</span>
+                <div className="flex flex-col">
+                  <a href="tel:+919354092323" className="text-white hover:text-white/80 transition-colors cursor-pointer">+91 93540 92323</a>
+                  <a href="https://wa.me/919354092323" target="_blank" rel="noopener noreferrer" className="text-[10px] text-white/40 hover:text-white transition-colors">Chat on WhatsApp</a>
+                </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-white/5 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10">
-                  <MapPin size={18} />
+              <div className="flex items-start gap-4 group">
+                <div className="w-10 h-10 bg-zinc-900 rounded-full flex items-center justify-center border border-white/5 group-hover:border-white/20 transition-all shrink-0">
+                  <MapPin size={16} className="text-white/60 group-hover:text-white transition-colors" />
                 </div>
-                <span className="hover:text-white transition-colors cursor-pointer">Shop No. 45, Gandhi Nagar Market, New Delhi</span>
+                <div className="flex flex-col">
+                  <span className="text-white leading-tight">Shop No. 45, Gandhi Nagar Market, New Delhi</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        
-        <div className="pt-20 select-none pointer-events-none opacity-20">
-          <h1 className="text-[12vw] font-black tracking-tighter leading-none text-white text-center uppercase">
-            S.K Enterprises
+
+        <div className="select-none pointer-events-none opacity-[0.1]">
+          <h1 className="text-[10vw] font-black tracking-[-0.05em] leading-none text-white text-center uppercase whitespace-nowrap overflow-hidden">
+            S.K ENTERPRISES
           </h1>
         </div>
-        
+
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-white/30 text-sm font-medium">
           <p>© 2026 S.K Enterprises. All rights reserved.</p>
           <div className="flex gap-8">

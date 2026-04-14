@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { Truck, ShieldCheck, Clock, RefreshCcw, Package, MapPin, Download } from "lucide-react";
 import { AnimatedButton } from "../components/Shared";
+import { SEO } from "../components/SEO";
 import { Link } from "react-router-dom";
 
 const PolicySection = ({ icon, title, children }: any) => (
@@ -23,29 +24,43 @@ export default function ShippingPolicyPage() {
 
   const handleDownload = () => {
     setIsDownloading(true);
+    
+    const link = document.createElement('a');
+    link.href = '/SK_Enterprises_Catalog.pdf';
+    link.download = 'SK_Enterprises_Shipping_Rates.pdf';
+    document.body.appendChild(link);
+    
     setTimeout(() => {
+      link.click();
+      document.body.removeChild(link);
       setIsDownloading(false);
-      alert("Shipping rate card download started! (Simulation)");
-    }, 2000);
+    }, 1000);
   };
 
   return (
     <div className="relative">
+      <SEO title="Shipping & Returns" description="Learn about S.K Enterprises' reliable wholesale shipping methods, dispatch timelines, and quality guarantee." />
       {/* Hero Section */}
-      <section className="relative h-[50vh] min-h-[450px] flex flex-col justify-end items-center pb-20 overflow-hidden">
+      <section className="relative h-[50vh] min-h-[450px] flex flex-col justify-center items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://picsum.photos/seed/sk-logistics/1920/1080" 
+            src="/images/heroes/shipping-hero.png" 
             alt="Logistics and Shipping" 
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-black/60" />
-          <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-t from-black to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 h-[100px] bg-gradient-to-t from-black/30 to-transparent backdrop-blur-xl" />
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute bottom-0 left-0 right-0 h-[350px] bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+          <div 
+            className="absolute bottom-0 left-0 right-0 h-[250px] backdrop-blur-2xl"
+            style={{ 
+              WebkitMaskImage: 'linear-gradient(to top, black 10%, transparent 100%)',
+              maskImage: 'linear-gradient(to top, black 10%, transparent 100%)'
+            }}
+          />
         </div>
         
-        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6 pt-[120px]">
+        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6 pt-[80px]">
           <div className="flex flex-col items-center text-center gap-4 max-w-3xl">
             <div className="bg-white/15 backdrop-blur-xs px-4 py-1 rounded-full flex items-center gap-2 border border-white/10">
               <div className="bg-white text-black text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">LOGISTICS</div>
@@ -117,7 +132,7 @@ export default function ShippingPolicyPage() {
           </div>
           <div className="relative aspect-square rounded-[40px] overflow-hidden">
             <img 
-              src="https://picsum.photos/seed/sk-packaging/800/800" 
+              src="/images/heroes/about-hero.png" 
               alt="Wholesale Packaging" 
               className="w-full h-full object-cover opacity-80"
               referrerPolicy="no-referrer"

@@ -1,8 +1,9 @@
-import { motion } from "motion/react";
+import { SEO } from "../components/SEO";
 
 export default function LegalPage() {
   return (
     <div className="pt-40 pb-32 px-6 md:px-12 max-w-screen-md mx-auto">
+      <SEO title="Privacy & Terms" description="Legal information, privacy policy, and terms of service for S.K Enterprises." />
       <div className="flex flex-col gap-12">
         <div className="flex flex-col gap-4">
           <h1 className="text-5xl font-medium tracking-tighter">Privacy & Terms</h1>

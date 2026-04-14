@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronLeft, ShieldCheck, Truck, Package, ArrowRight, Star, X, Ruler } from "lucide-react";
+import { ChevronLeft, ShieldCheck, Truck, Package, ArrowRight, Star, X, Ruler, Sparkles } from "lucide-react";
 import { AnimatedButton } from "../components/Shared";
+import { SEO } from "../components/SEO";
 import { products } from "../data/products";
 
 const SizeGuideModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
@@ -84,6 +85,9 @@ export default function ProductDetailPage() {
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
   const [selectedTier, setSelectedTier] = useState(0);
   const [selectedSize, setSelectedSize] = useState("M");
+  const [quantities, setQuantities] = useState<{ [key: string]: number }>({
+    S: 0, M: 0, L: 0, XL: 0, XXL: 0
+  });
 
   useEffect(() => {
     if (product) {
@@ -115,6 +119,7 @@ export default function ProductDetailPage() {
 
   return (
     <div className="pt-40 pb-24">
+      <SEO title={product.title} description={product.description} />
       <SizeGuideModal isOpen={isSizeGuideOpen} onClose={() => setIsSizeGuideOpen(false)} />
       <div className="max-w-screen-xl mx-auto px-6 md:px-12">
         {/* Breadcrumbs */}
@@ -181,25 +186,85 @@ export default function ProductDetailPage() {
               ))}
             </div>
 
-            {/* Bulk Pricing Tiers */}
-            <div className="bg-gallery p-6 md:p-8 rounded-3xl flex flex-col gap-6">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-bold uppercase tracking-widest text-black/40">Bulk Pricing Tiers</span>
-                <span className="text-[10px] font-bold text-black/40 uppercase tracking-tighter">MOQ: 48 Units</span>
+            {/* Bulk Order Calculator */}
+            <div className="bg-gallery p-6 md:p-10 rounded-[40px] flex flex-col gap-8 border border-black/5">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2 text-black/40">
+                  <Sparkles size={16} />
+                  <span className="text-sm font-bold uppercase tracking-widest">Bulk Order Calculator</span>
+                </div>
+                <h3 className="text-2xl font-bold tracking-tight">Calculate Your Savings</h3>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
-                {pricingTiers.map((tier, i) => (
-                  <button 
-                    key={i} 
-                    onClick={() => setSelectedTier(i)}
-                    className={`flex flex-col gap-1 p-4 rounded-2xl border transition-all text-left ${selectedTier === i ? 'bg-white border-black ring-2 ring-black/5' : 'bg-transparent border-black/5 hover:border-black/20'}`}
-                  >
-                    <span className="text-[10px] font-bold text-black/40 uppercase tracking-tight">{tier.range}</span>
-                    <span className="text-lg md:text-xl font-black tracking-tighter">₹{tier.price}</span>
-                  </button>
+
+              <div className="grid grid-cols-5 gap-3">
+                {["S", "M", "L", "XL", "XXL"].map(size => (
+                  <div key={size} className="flex flex-col gap-2">
+                    <span className="text-center text-xs font-bold text-black/40">{size}</span>
+                    <input 
+                      type="number" 
+                      min="0"
+                      value={quantities[size] || ""}
+                      onChange={(e) => setQuantities({ ...quantities, [size]: Math.max(0, parseInt(e.target.value) || 0) })}
+                      className="w-full bg-white border border-black/10 rounded-xl py-3 text-center font-bold focus:outline-none focus:border-black transition-colors"
+                      placeholder="0"
+                    />
+                  </div>
                 ))}
               </div>
-              <p className="text-[10px] md:text-xs text-dove-gray italic">*Prices are exclusive of GST and shipping.</p>
+
+              {(() => {
+                const totalQty = (Object.values(quantities) as number[]).reduce((a, b) => a + b, 0);
+                const basePrice = Number(product.price);
+                let discount = 0;
+                let tierLabel = "Standard Rate";
+
+                if (totalQty >= 500) {
+                  discount = 0.15;
+                  tierLabel = "Premium Tier (15% OFF)";
+                } else if (totalQty >= 100) {
+                  discount = 0.08;
+                  tierLabel = "Wholesale Tier (8% OFF)";
+                }
+
+                const discountedPrice = Math.floor(basePrice * (1 - discount));
+                const totalCost = totalQty * discountedPrice;
+                const savings = totalQty * (basePrice - discountedPrice);
+
+                return (
+                  <div className="flex flex-col gap-6 pt-6 border-t border-black/5">
+                    <div className="flex flex-col gap-4">
+                      <div className="flex justify-between items-center text-sm font-medium">
+                        <span className="text-black/40 uppercase tracking-widest">Current Tier</span>
+                        <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tighter ${discount > 0 ? "bg-black text-white" : "bg-black/5 text-black/40"}`}>
+                          {tierLabel}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-end">
+                        <div className="flex flex-col">
+                          <span className="text-black/40 text-xs font-bold uppercase tracking-widest">Unit Price</span>
+                          <span className="text-3xl font-black tracking-tighter">₹{discountedPrice}</span>
+                        </div>
+                        <div className="flex flex-col items-end">
+                          <span className="text-black/40 text-xs font-bold uppercase tracking-widest">Total Qty</span>
+                          <span className="text-3xl font-black tracking-tighter">{totalQty}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {savings > 0 && (
+                      <div className="bg-white/50 border border-black/5 p-4 rounded-2xl flex justify-between items-center">
+                        <span className="text-sm font-bold text-black/60">Estimated Savings:</span>
+                        <span className="text-xl font-black tracking-tighter text-black">₹{savings.toLocaleString()}</span>
+                      </div>
+                    )}
+
+                    <div className="flex justify-between items-center pt-2">
+                        <span className="text-lg font-bold">Estimated Quote</span>
+                        <span className="text-4xl font-black tracking-tighter">₹{totalCost.toLocaleString()}</span>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Size Chart */}
@@ -226,19 +291,30 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Link to="/wholesale-inquiry" className="flex-1">
-                <AnimatedButton variant="black" className="w-full py-5 text-base font-bold flex items-center justify-center gap-3">
-                  Inquire for Bulk <ArrowRight size={18} />
-                </AnimatedButton>
-              </Link>
-              <Link to="/contact" className="flex-1 sm:flex-none">
-                <AnimatedButton variant="transparent" className="w-full px-8 py-5 font-bold text-black border-black/10">
-                  Request Sample
-                </AnimatedButton>
-              </Link>
-            </div>
+            {(() => {
+                const totalQty = (Object.values(quantities) as number[]).reduce((a, b) => a + b, 0);
+                const breakdown = Object.entries(quantities)
+                  .filter(([_, qty]) => (qty as number) > 0)
+                  .map(([size, qty]) => `${size}:${qty}`)
+                  .join(", ");
+                
+                const inquiryUrl = `/wholesale-inquiry?product=${encodeURIComponent(product.title)}&qty=${totalQty}${breakdown ? `&breakdown=${encodeURIComponent(breakdown)}` : ""}`;
+
+                return (
+                  <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                    <Link to={inquiryUrl} className="flex-1">
+                      <AnimatedButton variant="black" className="w-full py-5 text-base font-bold flex items-center justify-center gap-3">
+                        Inquire for Bulk <ArrowRight size={18} />
+                      </AnimatedButton>
+                    </Link>
+                    <Link to={`/contact?product=${encodeURIComponent(product.title)}`} className="flex-1 sm:flex-none">
+                      <AnimatedButton variant="transparent" className="w-full px-8 py-5 font-bold text-black border-black/10">
+                        Request Sample
+                      </AnimatedButton>
+                    </Link>
+                  </div>
+                );
+              })()}
 
             {/* Trust Badges */}
             <div className="grid grid-cols-3 gap-4 pt-8 border-t border-black/5">

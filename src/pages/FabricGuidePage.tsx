@@ -1,5 +1,5 @@
-import { motion } from "motion/react";
 import { Info, ShieldCheck, Droplets, Wind, Layers } from "lucide-react";
+import { SEO } from "../components/SEO";
 
 const FabricCard = ({ title, desc, icon, properties }: any) => (
   <div className="bg-white p-10 rounded-[40px] border border-black/5 shadow-sm flex flex-col gap-8">
@@ -25,21 +25,28 @@ const FabricCard = ({ title, desc, icon, properties }: any) => (
 export default function FabricGuidePage() {
   return (
     <div className="relative">
+      <SEO title="Fabric & Quality Guide" description="Learn about the premium fabrics we use at S.K Enterprises, including 100% Cotton, Linen, and Oxford weaves." />
       {/* Hero Section */}
-      <section className="relative h-[50vh] min-h-[450px] flex flex-col justify-end items-center pb-20 overflow-hidden">
+      <section className="relative h-[50vh] min-h-[450px] flex flex-col justify-center items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://picsum.photos/seed/sk-fabrics/1920/1080" 
+            src="/images/heroes/fabric-guide-hero.png" 
             alt="Fabric Textures" 
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-black/60" />
-          <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-t from-black to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 h-[100px] bg-gradient-to-t from-black/30 to-transparent backdrop-blur-xl" />
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute bottom-0 left-0 right-0 h-[350px] bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+          <div 
+            className="absolute bottom-0 left-0 right-0 h-[250px] backdrop-blur-2xl"
+            style={{ 
+              WebkitMaskImage: 'linear-gradient(to top, black 10%, transparent 100%)',
+              maskImage: 'linear-gradient(to top, black 10%, transparent 100%)'
+            }}
+          />
         </div>
         
-        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6 pt-[120px]">
+        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6 pt-[80px]">
           <div className="flex flex-col items-center text-center gap-4 max-w-3xl">
             <div className="bg-white/15 backdrop-blur-xs px-4 py-1 rounded-full flex items-center gap-2 border border-white/10">
               <Info size={14} className="text-white" />
@@ -110,7 +117,7 @@ export default function FabricGuidePage() {
             </div>
           </div>
           <div className="lg:w-1/2 relative aspect-square rounded-[40px] overflow-hidden">
-            <img src="https://picsum.photos/seed/sk-microscope/800/800" alt="Fabric Close-up" className="w-full h-full object-cover opacity-60" />
+            <img src="/images/categories/cat-oxford.png" alt="Fabric Close-up" className="w-full h-full object-cover opacity-60" />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="bg-white text-black px-8 py-4 rounded-full font-bold text-xl shadow-2xl">
                 Precision Weaving

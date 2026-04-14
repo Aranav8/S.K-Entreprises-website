@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { Star, ShieldCheck, Truck, Factory, Users, History } from "lucide-react";
 import { AnimatedButton, BadgeIcon } from "../components/Shared";
+import { SEO } from "../components/SEO";
 import { Link } from "react-router-dom";
 
 const SectionHeader = ({ tag, title, description }: any) => (
@@ -17,33 +18,40 @@ const SectionHeader = ({ tag, title, description }: any) => (
 export default function AboutPage() {
   return (
     <div className="relative">
+      <SEO title="Our Heritage & Quality" description="Discover the 15-year legacy of S.K Enterprises, a leading name in premium wholesale men's shirt manufacturing and textile quality." />
       {/* Hero Section - Exactly like Home but with About content and no carousel */}
-      <section className="relative h-[50vh] min-h-[450px] flex flex-col justify-end items-center pb-20 overflow-hidden">
+      <section className="relative h-[50vh] min-h-[450px] flex flex-col justify-center items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img 
-            src="https://picsum.photos/seed/sk-about-hero-final/1920/1080" 
-            alt="S.K Enterprises Legacy" 
+          <img
+            src="/images/heroes/about-hero.png"
+            alt="S.K Enterprises Legacy"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-black/60" />
-          <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-t from-black to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 h-[100px] bg-gradient-to-t from-black/30 to-transparent backdrop-blur-xl" />
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute bottom-0 left-0 right-0 h-[350px] bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+          <div
+            className="absolute bottom-0 left-0 right-0 h-[250px] backdrop-blur-2xl"
+            style={{
+              WebkitMaskImage: 'linear-gradient(to top, black 10%, transparent 100%)',
+              maskImage: 'linear-gradient(to top, black 10%, transparent 100%)'
+            }}
+          />
         </div>
-        
-        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6 pt-[120px]">
+
+        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6 pt-[80px]">
           <div className="flex flex-col items-center text-center gap-4 max-w-3xl">
             <div className="bg-white/15 backdrop-blur-xs px-4 py-1 rounded-full flex items-center gap-2 border border-white/10">
               <div className="bg-white text-black text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">ABOUT</div>
               <span className="text-white text-sm font-medium tracking-tight">Know about S.K Enterprises</span>
             </div>
-            <h1 className="text-white text-4xl md:text-6xl font-medium tracking-tighter leading-tight">
-              Timeless quality, <br className="hidden md:block" /> modern wholesale.
+            <h1 className="text-white text-4xl md:text-6xl font-medium tracking-tighter leading-tight whitespace-nowrap">
+              Timeless quality, modern wholesale.
             </h1>
-            <p className="text-white/80 text-base md:text-lg font-light tracking-tight max-w-2xl">
+            <p className="text-white/70 text-base md:text-lg font-light tracking-tight max-w-2xl">
               We focus on supplying essential men's shirts that remain relevant, durable, and profitable for your retail business across all seasons. S.K Enterprises is your partner in growth.
             </p>
-            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
+            {/* <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
               <a href="#story" className="w-full sm:w-auto">
                 <AnimatedButton variant="white" className="w-full px-8">
                   Our Story
@@ -54,7 +62,7 @@ export default function AboutPage() {
                   Contact Us
                 </AnimatedButton>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -70,18 +78,25 @@ export default function AboutPage() {
             More than wholesale, S.K Enterprises is a commitment to your growth.
           </h2>
         </div>
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { label: "Retailers Served", value: "2,500+", img: "https://picsum.photos/seed/stat-1/400/400" },
-            { label: "Shirts Dispatched", value: "1M+", img: "https://picsum.photos/seed/stat-2/400/400" },
-            { label: "Ready Styles", value: "500+", img: "https://picsum.photos/seed/stat-3/400/400" },
-            { label: "Cities Covered", value: "150+", img: "https://picsum.photos/seed/stat-4/400/400" },
+            { label: "Retailers Served", value: "2,500+", img: "/images/products/formal-1.png" },
+            { label: "Shirts Dispatched", value: "1M+", img: "/images/products/formal-2.png" },
+            { label: "Ready Styles", value: "500+", img: "/images/products/linen-1.png" },
+            { label: "Cities Covered", value: "150+", img: "/images/products/linen-2.png" },
           ].map((stat, i) => (
             <div key={i} className="relative aspect-square rounded-3xl overflow-hidden group">
               <img src={stat.img} alt={stat.label} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" referrerPolicy="no-referrer" />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors" />
-              <div className="absolute inset-0 flex flex-col justify-end p-8 text-white">
+              <div
+                className="absolute bottom-0 left-0 right-0 h-[60%] backdrop-blur-md"
+                style={{
+                  WebkitMaskImage: 'linear-gradient(to top, black 20%, transparent 100%)',
+                  maskImage: 'linear-gradient(to top, black 20%, transparent 100%)'
+                }}
+              />
+              <div className="absolute inset-0 flex flex-col justify-end p-8 text-white z-10">
                 <div className="text-4xl font-black tracking-tighter mb-1">{stat.value}</div>
                 <div className="text-sm font-bold uppercase tracking-widest opacity-80">{stat.label}</div>
               </div>
@@ -96,7 +111,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="lg:col-span-1">
               <div className="sticky top-40">
-                <SectionHeader 
+                <SectionHeader
                   tag="The Journey"
                   title="From Gandhi Nagar to your doorstep."
                 />
@@ -129,7 +144,7 @@ export default function AboutPage() {
                   icon: <Truck className="text-black" />
                 }
               ].map((milestone, i) => (
-                <motion.div 
+                <motion.div
                   key={i}
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -155,7 +170,7 @@ export default function AboutPage() {
       {/* Our Values */}
       <section className="py-32 px-6 md:px-12 max-w-screen-xl mx-auto">
         <div className="text-center flex flex-col items-center gap-6 mb-20">
-          <SectionHeader 
+          <SectionHeader
             tag="Our Values"
             title="What we stand for"
           />
@@ -196,9 +211,9 @@ export default function AboutPage() {
         <div className="max-w-screen-xl mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div className="relative rounded-[40px] overflow-hidden aspect-square">
-              <img 
-                src="https://picsum.photos/seed/sk-quality-check/800/800" 
-                alt="Quality Inspection" 
+              <img
+                src="/images/heroes/fabric-guide-hero.png"
+                alt="Quality Inspection"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
@@ -249,35 +264,35 @@ export default function AboutPage() {
       </section>
 
       {/* Warehouse Glimpse - Image 3 Differentiation */}
-      <section className="py-32 bg-[#0a0a0a] text-white overflow-hidden border-b border-white/5">
+      <section className="py-32 bg-white text-black overflow-hidden border-b border-black/5">
         <div className="max-w-screen-xl mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div className="flex flex-col gap-8">
-              <div className="bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full self-start flex items-center gap-2 border border-white/10">
-                <BadgeIcon className="bg-white" iconClassName="text-black" />
+              <div className="bg-gallery px-4 py-1.5 rounded-full self-start flex items-center gap-2 border border-black/5">
+                <BadgeIcon className="bg-black" iconClassName="text-white" />
                 <span className="text-sm font-medium uppercase tracking-wider">Our Operations</span>
               </div>
               <h2 className="text-4xl md:text-6xl font-medium tracking-tighter leading-tight">A warehouse built for scale.</h2>
-              <p className="text-white/60 text-xl font-medium leading-relaxed">
+              <p className="text-dove-gray text-xl font-medium leading-relaxed">
                 Located in the heart of Delhi's textile hub, our facility is designed for speed. We process hundreds of bulk orders daily, ensuring that your stock reaches you within 48-72 hours across India.
               </p>
               <div className="grid grid-cols-2 gap-8 mt-4">
                 <div>
                   <div className="text-4xl font-black tracking-tighter mb-1">5000+</div>
-                  <div className="text-xs font-bold uppercase tracking-widest opacity-40">Sq. Ft Warehouse</div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-black/40">Sq. Ft Warehouse</div>
                 </div>
                 <div>
                   <div className="text-4xl font-black tracking-tighter mb-1">24Hr</div>
-                  <div className="text-xs font-bold uppercase tracking-widest opacity-40">Dispatch Guarantee</div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-black/40">Dispatch Guarantee</div>
                 </div>
               </div>
             </div>
             <div className="relative">
               <div className="grid grid-cols-2 gap-4">
-                <img src="https://picsum.photos/seed/sk-warehouse-1/400/600" alt="Warehouse 1" className="rounded-2xl aspect-[2/3] object-cover" referrerPolicy="no-referrer" />
+                <img src="/images/heroes/home-hero.png" alt="Warehouse 1" className="rounded-2xl aspect-[2/3] object-cover" referrerPolicy="no-referrer" />
                 <div className="flex flex-col gap-4 pt-12">
-                  <img src="https://picsum.photos/seed/sk-warehouse-2/400/400" alt="Warehouse 2" className="rounded-2xl aspect-square object-cover" referrerPolicy="no-referrer" />
-                  <img src="https://picsum.photos/seed/sk-warehouse-3/400/400" alt="Warehouse 3" className="rounded-2xl aspect-square object-cover" referrerPolicy="no-referrer" />
+                  <img src="/images/products/formal-1.png" alt="Warehouse 2" className="rounded-2xl aspect-square object-cover" referrerPolicy="no-referrer" />
+                  <img src="/images/products/formal-2.png" alt="Warehouse 3" className="rounded-2xl aspect-square object-cover" referrerPolicy="no-referrer" />
                 </div>
               </div>
             </div>

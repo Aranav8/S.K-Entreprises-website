@@ -10,6 +10,7 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import ShippingPolicyPage from "./pages/ShippingPolicyPage";
 import LegalPage from "./pages/LegalPage";
 import FabricGuidePage from "./pages/FabricGuidePage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 // Scroll to top on route change
 const ScrollToTop = () => {
@@ -37,6 +38,7 @@ export default function App() {
             <Route path="/shipping-policy" element={<ShippingPolicyPage />} />
             <Route path="/legal" element={<LegalPage />} />
             <Route path="/fabric-guide" element={<FabricGuidePage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
         <Footer />

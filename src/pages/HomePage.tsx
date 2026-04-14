@@ -3,16 +3,17 @@ import { Search, Mail, Star, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { AnimatedButton, BadgeIcon } from "../components/Shared";
+import { SEO } from "../components/SEO";
 import { products } from "../data/products";
 
 const heroCategories = [
-  { label: 'Oxford', img: 'https://picsum.photos/seed/oxford-shirt/140/105', heroImg: 'https://picsum.photos/seed/oxford-hero/1920/1080' },
-  { label: 'Linen', img: 'https://picsum.photos/seed/linen-shirt/140/105', heroImg: 'https://picsum.photos/seed/linen-hero/1920/1080' },
-  { label: 'Checks', img: 'https://picsum.photos/seed/check-shirt/140/105', heroImg: 'https://picsum.photos/seed/check-hero/1920/1080' },
-  { label: 'Cotton', img: 'https://picsum.photos/seed/cotton-shirt/140/105', heroImg: 'https://picsum.photos/seed/cotton-hero/1920/1080' },
-  { label: 'Denim', img: 'https://picsum.photos/seed/denim-shirt/140/105', heroImg: 'https://picsum.photos/seed/denim-hero/1920/1080' },
-  { label: 'Prints', img: 'https://picsum.photos/seed/printed-shirt/140/105', heroImg: 'https://picsum.photos/seed/printed-hero/1920/1080' },
-  { label: 'Basics', img: 'https://picsum.photos/seed/plain-shirt/140/105', heroImg: 'https://picsum.photos/seed/plain-hero/1920/1080' },
+  { label: 'Oxford', img: '/images/categories/cat-oxford.png', heroImg: '/images/heroes/home-hero.png' },
+  { label: 'Linen', img: '/images/categories/cat-linen.png', heroImg: '/images/products/linen-1.png' },
+  { label: 'Checks', img: '/images/products/formal-2.png', heroImg: '/images/products/formal-2.png' },
+  { label: 'Cotton', img: '/images/products/basic-1.png', heroImg: '/images/products/basic-1.png' },
+  { label: 'Denim', img: '/images/products/linen-2.png', heroImg: '/images/products/linen-2.png' },
+  { label: 'Prints', img: '/images/products/print-1.png', heroImg: '/images/products/print-1.png' },
+  { label: 'Basics', img: '/images/products/basic-2.png', heroImg: '/images/products/basic-2.png' },
 ];
 
 const ProductCard = ({ id, image, title, price, oldPrice, tag, colors }: any) => {
@@ -109,7 +110,7 @@ const CollectionCard = ({ image, tag, title, description, priceRange }: any) => 
             </div>
             <div className="flex flex-col">
               <span className="text-xs md:text-sm text-boulder font-medium">Pricing start from:</span>
-              <span className="text-sm md:text-base font-bold">${priceRange.start} — ${priceRange.end}</span>
+              <span className="text-sm md:text-base font-bold">₹350 — ₹850</span>
             </div>
           </div>
           <Link to="/catalog" className="w-full sm:w-auto">
@@ -128,6 +129,7 @@ export default function HomePage() {
 
   return (
     <>
+      <SEO title="Premium Wholesale Men's Shirts" />
       {/* Hero Section */}
       <section className="relative min-h-[550px] md:h-screen md:min-h-[700px] flex flex-col justify-end items-center pb-8 md:pb-12 overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -144,9 +146,15 @@ export default function HomePage() {
               referrerPolicy="no-referrer"
             />
           </AnimatePresence>
-          <div className="absolute inset-0 bg-black/60" />
-          <div className="absolute bottom-0 left-0 right-0 h-[300px] bg-gradient-to-t from-black to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 h-[190px] bg-gradient-to-t from-black/30 to-transparent backdrop-blur-xl" />
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute bottom-0 left-0 right-0 h-[350px] bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+          <div 
+            className="absolute bottom-0 left-0 right-0 h-[250px] backdrop-blur-2xl"
+            style={{ 
+              WebkitMaskImage: 'linear-gradient(to top, black 10%, transparent 100%)',
+              maskImage: 'linear-gradient(to top, black 10%, transparent 100%)'
+            }}
+          />
         </div>
         
         <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-8 md:gap-12 pt-[120px] md:pt-[160px]">
@@ -212,10 +220,10 @@ export default function HomePage() {
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {[ 
-            { title: "Premium Formals", desc: "High-thread count cotton shirts for the modern professional. Available in slim and regular fits.", image: "https://picsum.photos/seed/formal-shirt-folded/400/500" },
-            { title: "Casual Linens", desc: "Breathable, high-quality linen blends perfect for summer collections and premium retail.", image: "https://picsum.photos/seed/linen-shirt/400/500" },
-            { title: "Digital Prints", desc: "Trend-setting printed shirts for party wear and festive seasons. Unique designs that sell fast.", image: "https://picsum.photos/seed/patterned-shirt/400/500" },
-            { title: "Daily Wear Basics", desc: "Durable, everyday cotton shirts in a wide range of colors. The backbone of any retail shop.", image: "https://picsum.photos/seed/shirts-stack/400/500" },
+            { title: "Premium Formals", desc: "High-thread count cotton shirts for the modern professional. Available in slim and regular fits.", image: "/images/products/formal-1.png" },
+            { title: "Casual Linens", desc: "Breathable, high-quality linen blends perfect for summer collections and premium retail.", image: "/images/products/linen-1.png" },
+            { title: "Digital Prints", desc: "Trend-setting printed shirts for party wear and festive seasons. Unique designs that sell fast.", image: "/images/products/print-1.png" },
+            { title: "Daily Wear Basics", desc: "Durable, everyday cotton shirts in a wide range of colors. The backbone of any retail shop.", image: "/images/products/basic-1.png" },
           ].map((cat, i) => (
             <motion.div 
               key={i}
@@ -237,7 +245,7 @@ export default function HomePage() {
       {/* About Section */}
       <section className="relative min-h-[600px] py-20 md:h-[700px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src="https://picsum.photos/seed/clothing-warehouse-stock/1920/800" alt="Wholesale Warehouse" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+          <img src="/images/heroes/home-hero.png" alt="Wholesale Warehouse" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
           <div className="absolute inset-0 bg-black/60" />
         </div>
         <div className="relative z-10 text-center flex flex-col items-center gap-8 max-w-3xl px-6">
@@ -301,11 +309,10 @@ export default function HomePage() {
         />
         <div className="flex flex-col gap-8">
           <CollectionCard 
-            image="https://picsum.photos/seed/men-fashion/800/800"
+            image="/images/heroes/catalog-hero.png"
             tag="Men's Premium"
             title="The 2026 Signature Men's Collection"
             description="Our latest wholesale range features premium fabrics and modern cuts designed to give your retail store a competitive edge."
-            priceRange={{ start: "45.00", end: "180.00" }}
           />
         </div>
       </section>
