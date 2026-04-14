@@ -1,0 +1,286 @@
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { motion, AnimatePresence } from "motion/react";
+import { ChevronLeft, ShieldCheck, Truck, Package, ArrowRight, Star, X, Ruler } from "lucide-react";
+import { AnimatedButton } from "../components/Shared";
+import { products } from "../data/products";
+
+const SizeGuideModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
+  <AnimatePresence>
+    {isOpen && (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        />
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: 20 }}
+          className="relative bg-white w-full max-w-2xl rounded-[40px] overflow-hidden shadow-2xl"
+        >
+          <div className="p-8 md:p-12">
+            <div className="flex justify-between items-center mb-10">
+              <div className="flex items-center gap-3">
+                <Ruler size={24} className="text-black" />
+                <h3 className="text-3xl font-bold tracking-tight">Size Guide</h3>
+              </div>
+              <button onClick={onClose} className="p-2 hover:bg-gallery rounded-full transition-colors">
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-black/10">
+                    <th className="py-4 font-bold uppercase tracking-widest text-xs text-black/40">Size</th>
+                    <th className="py-4 font-bold uppercase tracking-widest text-xs text-black/40">Chest (in)</th>
+                    <th className="py-4 font-bold uppercase tracking-widest text-xs text-black/40">Length (in)</th>
+                    <th className="py-4 font-bold uppercase tracking-widest text-xs text-black/40">Shoulder (in)</th>
+                  </tr>
+                </thead>
+                <tbody className="text-lg">
+                  {[
+                    { s: "S", c: "38", l: "28", sh: "17" },
+                    { s: "M", c: "40", l: "29", sh: "18" },
+                    { s: "L", c: "42", l: "30", sh: "19" },
+                    { s: "XL", c: "44", l: "31", sh: "20" },
+                    { s: "XXL", c: "46", l: "32", sh: "21" },
+                  ].map((row, i) => (
+                    <tr key={i} className="border-b border-black/5 hover:bg-gallery/50 transition-colors">
+                      <td className="py-4 font-black">{row.s}</td>
+                      <td className="py-4">{row.c}"</td>
+                      <td className="py-4">{row.l}"</td>
+                      <td className="py-4">{row.sh}"</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="mt-10 p-6 bg-gallery rounded-2xl flex gap-4 items-start">
+              <div className="shrink-0 mt-1">
+                <ShieldCheck size={20} className="text-black/40" />
+              </div>
+              <p className="text-sm text-dove-gray leading-relaxed">
+                <strong>Measurement Tip:</strong> For the best fit, measure a shirt you already own that fits you well and compare it with the chart above. All measurements are in inches.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    )}
+  </AnimatePresence>
+);
+
+export default function ProductDetailPage() {
+  const { id } = useParams();
+  const product = products.find(p => p.id === Number(id));
+  const [activeImage, setActiveImage] = useState("");
+  const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
+
+  useEffect(() => {
+    if (product) {
+      setActiveImage(product.image);
+    }
+    window.scrollTo(0, 0);
+  }, [product]);
+
+  if (!product) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-6">
+        <h2 className="text-3xl font-bold">Product not found</h2>
+        <Link to="/catalog">
+          <AnimatedButton variant="black">Back to Catalog</AnimatedButton>
+        </Link>
+      </div>
+    );
+  }
+
+  const relatedProducts = products
+    .filter(p => p.category === product.category && p.id !== product.id)
+    .slice(0, 4);
+
+  const pricingTiers = [
+    { range: "48 - 100 units", price: product.price },
+    { range: "101 - 500 units", price: (Number(product.price) * 0.92).toFixed(0) },
+    { range: "500+ units", price: (Number(product.price) * 0.85).toFixed(0) },
+  ];
+
+  return (
+    <div className="pt-32 pb-24">
+      <SizeGuideModal isOpen={isSizeGuideOpen} onClose={() => setIsSizeGuideOpen(false)} />
+      <div className="max-w-screen-xl mx-auto px-6 md:px-12">
+        {/* Breadcrumbs */}
+        <Link to="/catalog" className="flex items-center gap-2 text-black/40 hover:text-black transition-colors mb-12 group">
+          <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          <span className="text-sm font-bold uppercase tracking-widest">Back to Catalog</span>
+        </Link>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          {/* Image Gallery */}
+          <div className="flex flex-col gap-6">
+            <div className="aspect-[4/5] bg-gallery rounded-[40px] overflow-hidden">
+              <img 
+                src={activeImage} 
+                alt={product.title} 
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            <div className="flex gap-4 overflow-x-auto no-scrollbar">
+              {[product.image, ...(product.gallery || [])].map((img, i) => (
+                <button 
+                  key={i}
+                  onClick={() => setActiveImage(img)}
+                  className={`w-24 h-24 rounded-2xl overflow-hidden border-2 transition-all shrink-0 ${activeImage === img ? 'border-black' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                >
+                  <img src={img} alt={`${product.title} view ${i}`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Product Info */}
+          <div className="flex flex-col gap-10">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-bold uppercase tracking-widest text-black/40">{product.category}</span>
+                {product.tag && (
+                  <span className="bg-black text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">
+                    {product.tag}
+                  </span>
+                )}
+              </div>
+              <h1 className="text-4xl md:text-6xl font-medium tracking-tighter leading-tight">
+                {product.title}
+              </h1>
+              <div className="flex items-baseline gap-4 mt-2">
+                <span className="text-4xl font-black tracking-tighter">₹{product.price}</span>
+                <span className="text-black/40 font-medium">per unit (Wholesale)</span>
+              </div>
+            </div>
+
+            <p className="text-dove-gray text-lg leading-relaxed">
+              {product.description}
+            </p>
+
+            {/* Wholesale Specs */}
+            <div className="grid grid-cols-2 gap-y-6 gap-x-12 py-8 border-y border-black/5">
+              {Object.entries(product.specs).map(([key, value]) => (
+                <div key={key} className="flex flex-col gap-1">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-black/40">{key}</span>
+                  <span className="font-bold text-lg tracking-tight">{value}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Bulk Pricing Tiers */}
+            <div className="bg-gallery p-8 rounded-3xl flex flex-col gap-6">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-bold uppercase tracking-widest text-black/40">Bulk Pricing Tiers</span>
+                <span className="text-[10px] font-bold text-black/40 uppercase tracking-tighter">MOQ: 48 Units</span>
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                {pricingTiers.map((tier, i) => (
+                  <div key={i} className={`flex flex-col gap-1 p-4 rounded-2xl border ${i === 0 ? 'bg-white border-black/10' : 'bg-transparent border-black/5'}`}>
+                    <span className="text-[10px] font-bold text-black/40 uppercase tracking-tight">{tier.range}</span>
+                    <span className="text-xl font-black tracking-tighter">₹{tier.price}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-dove-gray italic">*Prices are exclusive of GST and shipping.</p>
+            </div>
+
+            {/* Size Chart */}
+            <div className="flex flex-col gap-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-bold uppercase tracking-widest text-black/40">Available Sizes</span>
+                <button 
+                  onClick={() => setIsSizeGuideOpen(true)}
+                  className="text-xs font-bold underline underline-offset-4 hover:opacity-60 transition-opacity"
+                >
+                  Size Guide
+                </button>
+              </div>
+              <div className="flex gap-3">
+                {["S", "M", "L", "XL", "XXL"].map(size => (
+                  <div key={size} className="w-12 h-12 rounded-xl border border-black/10 flex items-center justify-center font-bold hover:bg-black hover:text-white transition-all cursor-default">
+                    {size}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <Link to="/wholesale-inquiry" className="flex-1">
+                <AnimatedButton variant="black" className="w-full py-5 text-base font-bold flex items-center justify-center gap-3">
+                  Inquire for Bulk <ArrowRight size={18} />
+                </AnimatedButton>
+              </Link>
+              <AnimatedButton variant="transparent" className="px-8 py-5 font-bold text-black border-black/10">
+                Download Catalog
+              </AnimatedButton>
+            </div>
+
+            {/* Trust Badges */}
+            <div className="grid grid-cols-3 gap-4 pt-4">
+              <div className="flex flex-col items-center text-center gap-2">
+                <ShieldCheck size={24} className="text-black/20" />
+                <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">QC Verified</span>
+              </div>
+              <div className="flex flex-col items-center text-center gap-2">
+                <Truck size={24} className="text-black/20" />
+                <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Fast Dispatch</span>
+              </div>
+              <div className="flex flex-col items-center text-center gap-2">
+                <Package size={24} className="text-black/20" />
+                <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Bulk Ready</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Related Products */}
+        {relatedProducts.length > 0 && (
+          <div className="mt-40">
+            <div className="flex justify-between items-end mb-12">
+              <div className="flex flex-col gap-4">
+                <div className="bg-gallery px-4 py-1.5 rounded-full self-start flex items-center gap-2">
+                  <div className="w-2 h-2 bg-black rounded-full" />
+                  <span className="text-sm font-bold uppercase tracking-wider">Similar Styles</span>
+                </div>
+                <h2 className="text-4xl font-medium tracking-tighter">You might also like</h2>
+              </div>
+              <Link to="/catalog" className="text-black font-bold underline underline-offset-8 hover:opacity-60 transition-opacity">
+                View all {product.category}
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {relatedProducts.map((item) => (
+                <Link key={item.id} to={`/product/${item.id}`} className="flex flex-col gap-4 group">
+                  <div className="aspect-[3/4] bg-gallery rounded-3xl overflow-hidden relative">
+                    <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <div className="bg-white text-black px-6 py-2 rounded-full text-xs font-bold">View Details</div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <h3 className="font-bold tracking-tight">{item.title}</h3>
+                    <span className="text-xl font-black tracking-tighter">₹{item.price}</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
