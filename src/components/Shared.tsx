@@ -15,7 +15,7 @@ export const AnimatedButton = ({ children, className, variant = "black", ...prop
     <motion.button 
       whileHover="hover"
       initial="initial"
-      className={`relative px-8 py-3 rounded-full text-sm font-medium overflow-hidden group ${variants[variant]} ${className}`}
+      className={`relative px-6 md:px-8 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-medium overflow-hidden group ${variants[variant]} ${className}`}
       {...props}
     >
       <div className="relative h-5 overflow-hidden pointer-events-none">
@@ -120,14 +120,14 @@ export const Navbar = () => {
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className="fixed inset-0 z-[80] bg-black text-white flex flex-col p-8"
           >
-            <div className="flex justify-between items-center mb-16">
-              <span className="text-2xl font-bold tracking-tighter uppercase">S.K Enterprises</span>
+            <div className="flex justify-between items-center mb-12">
+              <span className="text-xl font-bold tracking-tighter uppercase">S.K Enterprises</span>
               <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors">
-                <X size={32} />
+                <X size={28} />
               </button>
             </div>
             
-            <div className="flex flex-col gap-8 text-4xl font-medium tracking-tighter">
+            <div className="flex flex-col gap-5 text-2xl md:text-3xl font-medium tracking-tighter overflow-y-auto py-4">
               <Link to="/" className="hover:text-white/60 transition-colors">Home</Link>
               <Link to="/about" className="hover:text-white/60 transition-colors">About Us</Link>
               <Link to="/catalog" className="hover:text-white/60 transition-colors">Catalog</Link>
@@ -137,14 +137,14 @@ export const Navbar = () => {
               <Link to="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
             </div>
 
-            <div className="mt-auto flex flex-col gap-8">
-              <div className="flex flex-col gap-2">
-                <span className="text-xs font-bold uppercase tracking-widest text-white/40">Quick Contact</span>
-                <a href="tel:+9198XXXXXXXX" className="text-xl font-bold">+91 98XX XXX XXX</a>
+            <div className="mt-auto pt-8 flex flex-col gap-6">
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Quick Contact</span>
+                <a href="tel:+9198XXXXXXXX" className="text-lg font-bold tracking-tight">+91 98XX XXX XXX</a>
               </div>
               <AnimatedButton 
                 variant="white" 
-                className="w-full py-5 text-lg font-bold"
+                className="w-full py-4 text-base font-bold"
                 onClick={handleDownload}
                 disabled={isDownloading}
               >
@@ -280,10 +280,10 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="bg-black text-white pt-32 pb-12 px-6 md:px-12">
-      <div className="max-w-screen-xl mx-auto flex flex-col gap-24">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-12 md:gap-16">
-          <h2 className="text-3xl md:text-5xl font-medium tracking-tight leading-tight max-w-md text-center md:text-left">
+    <footer className="bg-black text-white pt-20 md:pt-32 pb-12 px-6 md:px-12">
+      <div className="max-w-screen-xl mx-auto flex flex-col gap-16 md:gap-24">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-10 md:gap-16">
+          <h2 className="text-2xl md:text-5xl font-medium tracking-tight leading-tight max-w-md text-center md:text-left">
             {subscribed ? "Thank you for joining our network!" : "Get our wholesale price list directly in your inbox"}
           </h2>
           {subscribed ? (
@@ -313,10 +313,10 @@ export const Footer = () => {
         
         <div className="h-px bg-white/10 w-full" />
         
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-20">
-          <div className="flex flex-col gap-8">
-            <div className="text-3xl font-bold tracking-tighter uppercase">S.K Enterprises</div>
-            <p className="text-white/60 text-lg font-medium leading-relaxed">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 md:gap-20">
+          <div className="flex flex-col gap-6 md:gap-8">
+            <div className="text-2xl md:text-3xl font-bold tracking-tighter uppercase">S.K Enterprises</div>
+            <p className="text-white/60 text-base md:text-lg font-medium leading-relaxed">
               Specializing in premium wholesale men's shirts for over 15 years. Quality you can trust, prices that help you grow.
             </p>
             <div className="flex flex-col gap-2">

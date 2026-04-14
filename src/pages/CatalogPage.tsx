@@ -82,15 +82,15 @@ export default function CatalogPage() {
       </section>
 
       {/* Catalog Controls */}
-      <section className="sticky top-[80px] md:top-[100px] z-30 bg-white/80 backdrop-blur-xl border-b border-black/5 py-6 px-6 md:px-12">
-        <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-8">
+      <section className="sticky top-[70px] md:top-[100px] z-30 bg-white/80 backdrop-blur-xl border-b border-black/5 py-4 md:py-6 px-6 md:px-12">
+        <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6 md:gap-8">
           {/* Category Filter */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 no-scrollbar w-full lg:w-auto">
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 no-scrollbar w-full lg:w-auto px-2 lg:px-0">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 ${
+                className={`px-5 md:px-6 py-2 md:py-2.5 rounded-full text-xs md:text-sm font-medium whitespace-nowrap transition-all duration-300 ${
                   activeCategory === cat 
                 ? "bg-black text-white shadow-lg shadow-black/20" 
                 : "bg-gallery text-black/60 hover:bg-black/5"
@@ -102,42 +102,44 @@ export default function CatalogPage() {
           </div>
 
           {/* Search & Actions */}
-          <div className="flex items-center gap-4 w-full lg:w-auto">
-            <div className="relative flex-1 lg:w-64">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-black/30" size={18} />
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+            <div className="relative w-full lg:w-64">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-black/30" size={16} />
               <input 
                 type="text" 
                 placeholder="Search shirts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-gallery rounded-full pl-12 pr-6 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/5 transition-all"
+                className="w-full bg-gallery rounded-full pl-10 pr-6 py-2.5 md:py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/5 transition-all"
               />
             </div>
-            <div className="relative flex items-center gap-2">
-              <button 
-                onClick={() => setSortBy(sortBy === "price-low" ? "price-high" : "price-low")}
-                className={`p-3 rounded-full transition-all flex items-center gap-2 ${sortBy !== "default" ? "bg-black text-white" : "bg-gallery text-black/60 hover:bg-black/5"}`}
-              >
-                <Filter size={20} />
-                {sortBy !== "default" && <span className="text-xs font-bold">{sortBy === "price-low" ? "Price: Low to High" : "Price: High to Low"}</span>}
-              </button>
-              {sortBy !== "default" && (
+            <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
+              <div className="relative flex items-center gap-2">
                 <button 
-                  onClick={() => setSortBy("default")}
-                  className="text-[10px] font-bold uppercase tracking-tighter opacity-40 hover:opacity-100 transition-opacity"
+                  onClick={() => setSortBy(sortBy === "price-low" ? "price-high" : "price-low")}
+                  className={`p-2.5 md:p-3 rounded-full transition-all flex items-center gap-2 ${sortBy !== "default" ? "bg-black text-white" : "bg-gallery text-black/60 hover:bg-black/5"}`}
                 >
-                  Clear
+                  <Filter size={18} />
+                  {sortBy !== "default" && <span className="text-[10px] md:text-xs font-bold">{sortBy === "price-low" ? "Price: L-H" : "Price: H-L"}</span>}
                 </button>
-              )}
+                {sortBy !== "default" && (
+                  <button 
+                    onClick={() => setSortBy("default")}
+                    className="text-[10px] font-bold uppercase tracking-tighter opacity-40 hover:opacity-100 transition-opacity"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+              <AnimatedButton 
+                variant="black" 
+                className="flex items-center gap-2 px-5 py-2.5 text-xs"
+                onClick={handleDownload}
+                disabled={isDownloading}
+              >
+                {isDownloading ? "..." : "Price List"} <Download size={14} />
+              </AnimatedButton>
             </div>
-            <AnimatedButton 
-              variant="black" 
-              className="hidden md:flex items-center gap-2 px-6 py-3"
-              onClick={handleDownload}
-              disabled={isDownloading}
-            >
-              {isDownloading ? "Downloading..." : "Price List"} <Download size={16} />
-            </AnimatedButton>
           </div>
         </div>
       </section>

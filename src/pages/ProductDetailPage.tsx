@@ -182,12 +182,12 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Bulk Pricing Tiers */}
-            <div className="bg-gallery p-8 rounded-3xl flex flex-col gap-6">
+            <div className="bg-gallery p-6 md:p-8 rounded-3xl flex flex-col gap-6">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-bold uppercase tracking-widest text-black/40">Bulk Pricing Tiers</span>
                 <span className="text-[10px] font-bold text-black/40 uppercase tracking-tighter">MOQ: 48 Units</span>
               </div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
                 {pricingTiers.map((tier, i) => (
                   <button 
                     key={i} 
@@ -195,11 +195,11 @@ export default function ProductDetailPage() {
                     className={`flex flex-col gap-1 p-4 rounded-2xl border transition-all text-left ${selectedTier === i ? 'bg-white border-black ring-2 ring-black/5' : 'bg-transparent border-black/5 hover:border-black/20'}`}
                   >
                     <span className="text-[10px] font-bold text-black/40 uppercase tracking-tight">{tier.range}</span>
-                    <span className="text-xl font-black tracking-tighter">₹{tier.price}</span>
+                    <span className="text-lg md:text-xl font-black tracking-tighter">₹{tier.price}</span>
                   </button>
                 ))}
               </div>
-              <p className="text-xs text-dove-gray italic">*Prices are exclusive of GST and shipping.</p>
+              <p className="text-[10px] md:text-xs text-dove-gray italic">*Prices are exclusive of GST and shipping.</p>
             </div>
 
             {/* Size Chart */}
@@ -241,24 +241,24 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Trust Badges */}
-            <div className="flex items-center justify-between pt-8 border-t border-black/5">
-              <div className="flex flex-col items-center text-center gap-3">
-                <div className="w-12 h-12 bg-gallery rounded-full flex items-center justify-center text-black/40">
-                  <ShieldCheck size={24} />
+            <div className="grid grid-cols-3 gap-4 pt-8 border-t border-black/5">
+              <div className="flex flex-col items-center text-center gap-2 md:gap-3">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-gallery rounded-full flex items-center justify-center text-black/40">
+                  <ShieldCheck size={20} className="md:w-6 md:h-6" />
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">QC Verified</span>
+                <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest opacity-60">QC Verified</span>
               </div>
-              <div className="flex flex-col items-center text-center gap-3">
-                <div className="w-12 h-12 bg-gallery rounded-full flex items-center justify-center text-black/40">
-                  <Truck size={24} />
+              <div className="flex flex-col items-center text-center gap-2 md:gap-3">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-gallery rounded-full flex items-center justify-center text-black/40">
+                  <Truck size={20} className="md:w-6 md:h-6" />
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Fast Dispatch</span>
+                <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest opacity-60">Fast Dispatch</span>
               </div>
-              <div className="flex flex-col items-center text-center gap-3">
-                <div className="w-12 h-12 bg-gallery rounded-full flex items-center justify-center text-black/40">
-                  <Package size={24} />
+              <div className="flex flex-col items-center text-center gap-2 md:gap-3">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-gallery rounded-full flex items-center justify-center text-black/40">
+                  <Package size={20} className="md:w-6 md:h-6" />
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Bulk Ready</span>
+                <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest opacity-60">Bulk Ready</span>
               </div>
             </div>
           </div>

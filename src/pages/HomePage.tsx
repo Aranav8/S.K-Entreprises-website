@@ -1,8 +1,19 @@
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { Search, Mail, Star, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { AnimatedButton, BadgeIcon } from "../components/Shared";
 import { products } from "../data/products";
+
+const heroCategories = [
+  { label: 'Oxford', img: 'https://picsum.photos/seed/oxford-shirt/140/105', heroImg: 'https://picsum.photos/seed/oxford-hero/1920/1080' },
+  { label: 'Linen', img: 'https://picsum.photos/seed/linen-shirt/140/105', heroImg: 'https://picsum.photos/seed/linen-hero/1920/1080' },
+  { label: 'Checks', img: 'https://picsum.photos/seed/check-shirt/140/105', heroImg: 'https://picsum.photos/seed/check-hero/1920/1080' },
+  { label: 'Cotton', img: 'https://picsum.photos/seed/cotton-shirt/140/105', heroImg: 'https://picsum.photos/seed/cotton-hero/1920/1080' },
+  { label: 'Denim', img: 'https://picsum.photos/seed/denim-shirt/140/105', heroImg: 'https://picsum.photos/seed/denim-hero/1920/1080' },
+  { label: 'Prints', img: 'https://picsum.photos/seed/printed-shirt/140/105', heroImg: 'https://picsum.photos/seed/printed-hero/1920/1080' },
+  { label: 'Basics', img: 'https://picsum.photos/seed/plain-shirt/140/105', heroImg: 'https://picsum.photos/seed/plain-hero/1920/1080' },
+];
 
 const ProductCard = ({ id, image, title, price, oldPrice, tag, colors }: any) => {
   return (
@@ -91,18 +102,18 @@ const CollectionCard = ({ image, tag, title, description, priceRange }: any) => 
           <p className="text-dove-gray text-base font-medium leading-relaxed max-w-md">{description}</p>
         </div>
         
-        <div className="bg-white p-2 rounded-xl flex items-center justify-between shadow-sm">
+        <div className="bg-white p-3 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
           <div className="flex items-center gap-3 px-2">
-            <div className="w-12 h-12 bg-alabaster rounded-lg flex items-center justify-center text-black">
+            <div className="w-12 h-12 bg-alabaster rounded-xl flex items-center justify-center text-black shrink-0">
               <Search size={24} />
             </div>
             <div className="flex flex-col">
-              <span className="text-sm text-boulder font-medium">Pricing start from:</span>
-              <span className="text-base font-medium">${priceRange.start} — ${priceRange.end}</span>
+              <span className="text-xs md:text-sm text-boulder font-medium">Pricing start from:</span>
+              <span className="text-sm md:text-base font-bold">${priceRange.start} — ${priceRange.end}</span>
             </div>
           </div>
-          <Link to="/catalog">
-            <AnimatedButton variant="black" className="px-6 py-2.5">
+          <Link to="/catalog" className="w-full sm:w-auto">
+            <AnimatedButton variant="black" className="w-full sm:w-auto px-6 py-2.5">
               All collections
             </AnimatedButton>
           </Link>
@@ -113,70 +124,80 @@ const CollectionCard = ({ image, tag, title, description, priceRange }: any) => 
 };
 
 export default function HomePage() {
+  const [activeHeroIndex, setActiveHeroIndex] = useState(3);
+
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-[600px] md:h-screen md:min-h-[700px] flex flex-col justify-end items-center pb-12 overflow-hidden">
+      <section className="relative min-h-[550px] md:h-screen md:min-h-[700px] flex flex-col justify-end items-center pb-8 md:pb-12 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img 
-            src="https://picsum.photos/seed/wholesale-shirts-hero/1920/1080" 
-            alt="Wholesale Shirts Warehouse" 
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-black/50" />
+          <AnimatePresence mode="wait">
+            <motion.img 
+              key={activeHeroIndex}
+              src={heroCategories[activeHeroIndex].heroImg} 
+              alt={heroCategories[activeHeroIndex].label} 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+              className="absolute inset-0 w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-black/60" />
           <div className="absolute bottom-0 left-0 right-0 h-[300px] bg-gradient-to-t from-black to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 h-[190px] bg-gradient-to-t from-black/30 to-transparent backdrop-blur-xl" />
         </div>
         
-        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-12 pt-[140px] md:pt-[160px]">
-          <div className="flex flex-col items-center text-center gap-6 max-w-3xl">
+        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-8 md:gap-12 pt-[120px] md:pt-[160px]">
+          <div className="flex flex-col items-center text-center gap-4 md:gap-6 max-w-3xl">
             <div className="bg-white/15 backdrop-blur-xs px-4 py-1 rounded-full flex items-center gap-2 border border-white/10">
               <div className="bg-white text-black text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">EST. 2011</div>
-              <span className="text-white text-sm font-medium tracking-tight">Wholesale Shirts Supplier</span>
+              <span className="text-white text-[12px] md:text-sm font-medium tracking-tight">Wholesale Shirts Supplier</span>
             </div>
-            <h1 className="text-white text-4xl md:text-6xl font-medium tracking-tighter leading-[1.1]">
+            <h1 className="text-white text-3xl md:text-6xl font-medium tracking-tighter leading-[1.1]">
               Premium Men's Shirts, Direct from the Factory.
             </h1>
-            <p className="text-white/80 text-base md:text-lg font-light tracking-tight max-w-2xl">
-              S.K Enterprises has been a trusted name in the wholesale textile market for over 15 years. We specialize exclusively in high-quality men's shirts, providing retailers with the best margins and ready-to-dispatch stock.
+            <p className="text-white/80 text-sm md:text-lg font-light tracking-tight max-w-2xl px-4 md:px-0">
+              S.K Enterprises has been a trusted name in the wholesale textile market for over 15 years. We specialize exclusively in high-quality men's shirts.
             </p>
-            <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-3 md:gap-4 w-full sm:w-auto">
               <Link to="/catalog" className="w-full sm:w-auto">
-                <AnimatedButton variant="white" className="w-full">
+                <AnimatedButton variant="white" className="w-full px-10">
                   View Current Stock
                 </AnimatedButton>
               </Link>
               <Link to="/wholesale-inquiry" className="w-full sm:w-auto">
-                <AnimatedButton variant="transparent" className="w-full">
+                <AnimatedButton variant="transparent" className="w-full px-10">
                   Get a Quote
                 </AnimatedButton>
               </Link>
             </div>
           </div>
           
-          {/* Hero Carousel */}
-          <div className="hidden sm:flex items-end gap-1.5 overflow-hidden pb-4">
-            {[
-              { label: 'Oxford', img: 'https://picsum.photos/seed/oxford-shirt/140/105' },
-              { label: 'Linen', img: 'https://picsum.photos/seed/linen-shirt/140/105' },
-              { label: 'Checks', img: 'https://picsum.photos/seed/check-shirt/140/105' },
-              { label: 'Cotton', img: 'https://picsum.photos/seed/cotton-shirt/140/105', active: true },
-              { label: 'Denim', img: 'https://picsum.photos/seed/denim-shirt/140/105' },
-              { label: 'Prints', img: 'https://picsum.photos/seed/printed-shirt/140/105' },
-              { label: 'Basics', img: 'https://picsum.photos/seed/plain-shirt/140/105' },
-            ].map((item, i) => (
-              <div 
-                key={i} 
-                className={`relative rounded-lg overflow-hidden transition-all duration-500 cursor-pointer hover:opacity-100 ${item.active ? 'w-[140px] h-[105px] opacity-100' : 'w-[88px] h-[70px] opacity-70'}`}
-              >
-                <img src={item.img} alt={item.label} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-center">
-                  <span className="text-white text-[13px] font-medium tracking-tight">{item.label}</span>
-                </div>
-                <div className="absolute inset-0 border border-white/20 rounded-lg" />
-              </div>
-            ))}
+          {/* Hero Carousel - Responsive */}
+          <div className="hidden md:block w-full max-w-screen-lg overflow-x-auto no-scrollbar pb-4">
+            <div className="flex items-end justify-center gap-2 md:gap-3 px-6 min-w-max mx-auto">
+              {heroCategories.map((item, i) => (
+                <motion.div 
+                  key={i} 
+                  onClick={() => setActiveHeroIndex(i)}
+                  layout
+                  className={`relative rounded-xl overflow-hidden transition-all duration-500 cursor-pointer border border-white/10 ${
+                    activeHeroIndex === i 
+                      ? 'w-[140px] md:w-[180px] h-[90px] md:h-[120px] opacity-100 ring-2 ring-white/30' 
+                      : 'w-[80px] md:w-[100px] h-[60px] md:h-[80px] opacity-50 hover:opacity-80'
+                  }`}
+                >
+                  <img src={item.img} alt={item.label} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex items-center justify-center">
+                    <span className={`text-white font-bold tracking-tight transition-all ${activeHeroIndex === i ? 'text-base md:text-lg' : 'text-[10px] md:text-xs'}`}>
+                      {item.label}
+                    </span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -220,9 +241,9 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-black/60" />
         </div>
         <div className="relative z-10 text-center flex flex-col items-center gap-8 max-w-3xl px-6">
-          <div className="bg-white/15 backdrop-blur-xs px-4 py-1.5 rounded-full flex items-center gap-2 border border-white/10">
-            <div className="bg-white text-black text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">OUR STORY</div>
-            <span className="text-white text-sm font-medium tracking-tight">From the Market to Your Screen</span>
+          <div className="bg-white/15 backdrop-blur-xs px-3 py-1.5 rounded-full flex items-center gap-3 border border-white/10 max-w-full overflow-hidden">
+            <div className="bg-white text-black text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-tighter shrink-0">OUR STORY</div>
+            <span className="text-white text-xs md:text-sm font-medium tracking-tight truncate">From the Market to Your Screen</span>
           </div>
           <h2 className="text-white text-3xl md:text-6xl font-medium tracking-tight">Reliable stock you can trust</h2>
           <p className="text-white/80 text-base md:text-lg font-medium leading-relaxed">
@@ -379,17 +400,10 @@ export default function HomePage() {
                 Trusted by 2,500+ <br /> store owners.
               </h2>
             </div>
-            <div className="flex flex-col gap-6 items-end">
-              <div className="flex flex-col gap-2 text-right">
+            <div className="flex flex-col gap-2 text-left md:text-right">
                 <div className="text-5xl font-black tracking-tighter">4.9/5</div>
                 <div className="text-white/40 text-sm font-bold uppercase tracking-widest">Average Rating</div>
               </div>
-              <Link to="/contact">
-                <AnimatedButton variant="transparent" className="whitespace-nowrap">
-                  Read all reviews
-                </AnimatedButton>
-              </Link>
-            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

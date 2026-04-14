@@ -15,12 +15,12 @@ const BenefitCard = ({ icon, title, desc }: any) => (
 );
 
 const FAQItem = ({ question, answer }: any) => (
-  <div className="flex flex-col gap-3 p-8 bg-gallery rounded-3xl">
+  <div className="flex flex-col gap-3 p-6 md:p-8 bg-gallery rounded-3xl">
     <div className="flex items-center gap-3 text-black">
-      <HelpCircle size={20} />
-      <h4 className="font-bold text-lg tracking-tight">{question}</h4>
+      <HelpCircle size={18} className="md:w-5 md:h-5" />
+      <h4 className="font-bold text-base md:text-lg tracking-tight">{question}</h4>
     </div>
-    <p className="text-dove-gray text-base leading-relaxed pl-8">{answer}</p>
+    <p className="text-dove-gray text-sm md:text-base leading-relaxed pl-7 md:pl-8">{answer}</p>
   </div>
 );
 
