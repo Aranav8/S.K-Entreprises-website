@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
-import { motion } from "motion/react";
-import { Search, Instagram, Facebook, Twitter, Mail, Phone, MapPin, MessageCircle, Download } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { Search, Instagram, Facebook, Twitter, Mail, Phone, MapPin, MessageCircle, Download, X, ArrowRight, Menu, Star, ChevronUp, ChevronRight } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export const AnimatedButton = ({ children, className, variant = "black", ...props }: any) => {
   const variants: any = {
     black: "bg-black text-white",
     white: "bg-white text-mine-shaft shadow-sm",
     transparent: "bg-white/15 backdrop-blur-md text-white border border-white/10",
+    outline: "bg-transparent border border-black/10 text-black",
   };
 
   return (
@@ -60,9 +61,19 @@ export const RollingLink = ({ children, to = "#", className = "" }: any) => {
   );
 };
 
+export const BadgeIcon = ({ className = "bg-black", iconClassName = "text-white", icon: Icon = ChevronUp }: { className?: string, iconClassName?: string, icon?: any }) => (
+  <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 overflow-hidden ${className}`}>
+    <Icon size={Icon === ChevronUp ? 14 : 16} className={`${iconClassName} ${Icon === ChevronRight ? "ml-0.5" : ""}`} />
+  </div>
+);
+
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
+  const navigate = useNavigate();
   const isAboutPage = location.pathname === "/about";
 
   useEffect(() => {
@@ -73,12 +84,111 @@ export const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Force scrolled state on About page since it doesn't have a full-screen hero
-  // const navScrolled = isScrolled || isAboutPage;
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/catalog?q=${encodeURIComponent(searchQuery)}`);
+      setIsSearchOpen(false);
+      setSearchQuery("");
+    }
+  };
+
   const navScrolled = isScrolled;
+
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = () => {
+    setIsDownloading(true);
+    setTimeout(() => {
+      setIsDownloading(false);
+      alert("Catalog download started! (Simulation)");
+    }, 2000);
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-[80] bg-black text-white flex flex-col p-8"
+          >
+            <div className="flex justify-between items-center mb-16">
+              <span className="text-2xl font-bold tracking-tighter uppercase">S.K Enterprises</span>
+              <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors">
+                <X size={32} />
+              </button>
+            </div>
+            
+            <div className="flex flex-col gap-8 text-4xl font-medium tracking-tighter">
+              <Link to="/" className="hover:text-white/60 transition-colors">Home</Link>
+              <Link to="/about" className="hover:text-white/60 transition-colors">About Us</Link>
+              <Link to="/catalog" className="hover:text-white/60 transition-colors">Catalog</Link>
+              <Link to="/wholesale-inquiry" className="hover:text-white/60 transition-colors">Wholesale Inquiry</Link>
+              <Link to="/fabric-guide" className="hover:text-white/60 transition-colors">Fabric Guide</Link>
+              <Link to="/shipping-policy" className="hover:text-white/60 transition-colors">Shipping & Returns</Link>
+              <Link to="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
+            </div>
+
+            <div className="mt-auto flex flex-col gap-8">
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-bold uppercase tracking-widest text-white/40">Quick Contact</span>
+                <a href="tel:+9198XXXXXXXX" className="text-xl font-bold">+91 98XX XXX XXX</a>
+              </div>
+              <AnimatedButton 
+                variant="white" 
+                className="w-full py-5 text-lg font-bold"
+                onClick={handleDownload}
+                disabled={isDownloading}
+              >
+                {isDownloading ? "Starting Download..." : "Download Catalog PDF"}
+              </AnimatedButton>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isSearchOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -100 }}
+            className="fixed inset-0 z-[70] bg-white flex flex-col items-center justify-center px-6"
+          >
+            <button 
+              onClick={() => setIsSearchOpen(false)}
+              className="absolute top-10 right-10 p-4 hover:bg-gallery rounded-full transition-colors"
+            >
+              <X size={32} />
+            </button>
+            
+            <form onSubmit={handleSearch} className="w-full max-w-4xl flex flex-col gap-8">
+              <span className="text-sm font-bold uppercase tracking-[0.3em] text-black/30 text-center">Search our wholesale catalog</span>
+              <div className="relative">
+                <input 
+                  autoFocus
+                  type="text" 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Try 'Formal Shirt'..."
+                  className="w-full bg-transparent border-b-2 border-black/10 py-8 text-4xl md:text-6xl font-medium tracking-tighter focus:outline-none focus:border-black transition-colors placeholder:text-black/5"
+                />
+                <button type="submit" className="absolute right-0 bottom-8 p-4 hover:scale-110 transition-transform">
+                  <ArrowRight size={48} />
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* Top Banner */}
       <div className="bg-black text-white py-2.5 overflow-hidden whitespace-nowrap">
         <div className="flex animate-marquee gap-12 text-[12px] font-medium uppercase tracking-tight">
@@ -97,9 +207,9 @@ export const Navbar = () => {
       </div>
       
       {/* Main Nav */}
-      <nav className={`w-full py-4 px-6 md:px-12 flex items-center transition-all duration-500 ease-in-out ${navScrolled ? 'bg-white shadow-sm' : 'bg-transparent'}`}>
+      <nav className={`w-full py-4 px-4 md:px-12 flex items-center transition-all duration-500 ease-in-out ${navScrolled ? 'bg-white shadow-sm' : 'bg-transparent'}`}>
         <div className="flex-1">
-          <Link to="/" className={`text-2xl font-bold tracking-tighter transition-colors duration-500 ${navScrolled ? 'text-black' : 'text-white'}`}>S.K Enterprises</Link>
+          <Link to="/" className={`text-xl md:text-2xl font-bold tracking-tighter transition-colors duration-500 ${navScrolled ? 'text-black' : 'text-white'}`}>S.K Enterprises</Link>
         </div>
 
         <div className={`hidden md:flex items-center gap-8 text-sm font-medium transition-colors duration-500 ${navScrolled ? 'text-black/70' : 'text-white/80'}`}>
@@ -111,15 +221,33 @@ export const Navbar = () => {
         </div>
         
         <div className="flex-1 flex items-center justify-end gap-4">
-          <button className={`hidden lg:flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all duration-500 ${navScrolled ? 'bg-black/5 text-black hover:bg-black/10' : 'bg-white/15 backdrop-blur-md text-white hover:bg-white/20'}`}>
-            <Download size={14} /> Catalog PDF
+          <button 
+            onClick={() => setIsMobileMenuOpen(true)}
+            className={`md:hidden p-2.5 rounded-full transition-all duration-500 ${navScrolled ? 'bg-black/5 text-black hover:bg-black/10' : 'bg-white/15 backdrop-blur-md text-white hover:bg-white/20'}`}
+          >
+            <Menu size={18} />
           </button>
-          <button className={`p-2.5 rounded-full transition-all duration-500 ${navScrolled ? 'bg-black/5 text-black hover:bg-black/10' : 'bg-white/15 backdrop-blur-md text-white hover:bg-white/20'}`}>
+          <AnimatedButton 
+            variant={navScrolled ? "outline" : "transparent"} 
+            className={`hidden lg:flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold transition-all duration-500 ${navScrolled ? "border-black/10 hover:bg-black/5" : ""}`}
+            onClick={handleDownload}
+            disabled={isDownloading}
+          >
+            <div className="flex items-center gap-2">
+              <Download size={14} /> {isDownloading ? "Downloading..." : "Catalog PDF"}
+            </div>
+          </AnimatedButton>
+          <button 
+            onClick={() => setIsSearchOpen(true)}
+            className={`p-2.5 rounded-full transition-all duration-500 ${navScrolled ? 'bg-black/5 text-black hover:bg-black/10' : 'bg-white/15 backdrop-blur-md text-white hover:bg-white/20'}`}
+          >
             <Search size={18} />
           </button>
-          <AnimatedButton variant={navScrolled ? "black" : "white"} className="px-6 py-2.5">
-            Shop all items
-          </AnimatedButton>
+          <Link to="/catalog">
+            <AnimatedButton variant={navScrolled ? "black" : "white"} className="px-6 py-2.5">
+              Shop all items
+            </AnimatedButton>
+          </Link>
         </div>
       </nav>
       
@@ -144,23 +272,43 @@ export const Navbar = () => {
 };
 
 export const Footer = () => {
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubscribed(true);
+  };
+
   return (
     <footer className="bg-black text-white pt-32 pb-12 px-6 md:px-12">
       <div className="max-w-screen-xl mx-auto flex flex-col gap-24">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-16">
-          <h2 className="text-4xl md:text-5xl font-medium tracking-tight leading-tight max-w-md text-center md:text-left">
-            Get our wholesale price list directly in your inbox
+        <div className="flex flex-col md:flex-row justify-between items-center gap-12 md:gap-16">
+          <h2 className="text-3xl md:text-5xl font-medium tracking-tight leading-tight max-w-md text-center md:text-left">
+            {subscribed ? "Thank you for joining our network!" : "Get our wholesale price list directly in your inbox"}
           </h2>
-          <div className="flex w-full max-w-lg gap-4 bg-mine-shaft p-2 rounded-full border border-white/5">
-            <input 
-              type="email" 
-              placeholder="Enter your email"
-              className="flex-1 bg-transparent rounded-full px-6 py-4 text-base font-light text-white placeholder:text-white/30 focus:outline-none"
-            />
-            <AnimatedButton variant="white" className="px-10 py-4 font-bold">
-              Subscribe
-            </AnimatedButton>
-          </div>
+          {subscribed ? (
+            <div className="flex items-center gap-4 bg-white/10 px-6 md:px-8 py-5 md:py-6 rounded-[24px] md:rounded-[32px] border border-white/10 w-full md:w-auto">
+              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black shrink-0">
+                <Star size={20} fill="currentColor" />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-bold text-base md:text-lg">Check your inbox</span>
+                <span className="text-white/40 text-xs md:text-sm">We've sent the latest price list.</span>
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row w-full max-w-lg gap-4 bg-mine-shaft p-2 rounded-[24px] sm:rounded-full border border-white/5">
+              <input 
+                required
+                type="email" 
+                placeholder="Enter your email"
+                className="flex-1 bg-transparent rounded-full px-6 py-4 text-base font-light text-white placeholder:text-white/30 focus:outline-none"
+              />
+              <AnimatedButton variant="white" className="px-10 py-4 font-bold w-full sm:w-auto">
+                Subscribe
+              </AnimatedButton>
+            </form>
+          )}
         </div>
         
         <div className="h-px bg-white/10 w-full" />

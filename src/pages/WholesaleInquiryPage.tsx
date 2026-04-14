@@ -1,6 +1,8 @@
+import React, { useState } from "react";
 import { motion } from "motion/react";
-import { Send, CheckCircle2, ShieldCheck, Truck, Package, HelpCircle } from "lucide-react";
-import { AnimatedButton } from "../components/Shared";
+import { Send, CheckCircle2, ShieldCheck, Truck, Package, HelpCircle, ArrowRight } from "lucide-react";
+import { AnimatedButton, BadgeIcon } from "../components/Shared";
+import { Link } from "react-router-dom";
 
 const BenefitCard = ({ icon, title, desc }: any) => (
   <div className="flex flex-col gap-4 p-8 bg-white rounded-3xl shadow-sm border border-black/5">
@@ -23,6 +25,68 @@ const FAQItem = ({ question, answer }: any) => (
 );
 
 export default function WholesaleInquiryPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    businessName: "",
+    phone: "",
+    email: "",
+    city: "",
+    volume: "50 - 100 Shirts",
+    message: ""
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 1500);
+  };
+
+  if (isSubmitted) {
+    return (
+      <div className="min-h-screen pt-32 pb-24 px-6 flex flex-col items-center justify-center text-center">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-24 h-24 bg-black text-white rounded-full flex items-center justify-center mb-8"
+        >
+          <CheckCircle2 size={48} />
+        </motion.div>
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-4xl md:text-6xl font-medium tracking-tighter mb-6"
+        >
+          Inquiry Received.
+        </motion.h1>
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-dove-gray text-lg md:text-xl max-w-lg mb-12"
+        >
+          Thank you for reaching out, {formData.name.split(' ')[0]}. Our wholesale manager will review your application and contact you on {formData.phone} within 24 hours.
+        </motion.p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <Link to="/catalog">
+            <AnimatedButton variant="black">Browse Catalog</AnimatedButton>
+          </Link>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative">
       {/* Hero Section */}
@@ -45,10 +109,10 @@ export default function WholesaleInquiryPage() {
               <div className="bg-white text-black text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">B2B PORTAL</div>
               <span className="text-white text-sm font-medium tracking-tight">Bulk Order Inquiry</span>
             </div>
-            <h1 className="text-white text-5xl md:text-6xl font-medium tracking-tighter leading-tight">
+            <h1 className="text-white text-4xl md:text-6xl font-medium tracking-tighter leading-tight">
               Partner with S.K Enterprises.
             </h1>
-            <p className="text-white/70 text-lg font-light tracking-tight max-w-2xl">
+            <p className="text-white/70 text-base md:text-lg font-light tracking-tight max-w-2xl">
               Join our network of 2,500+ successful retailers. Get access to factory-direct pricing, priority stock, and dedicated account management.
             </p>
           </div>
@@ -87,37 +151,76 @@ export default function WholesaleInquiryPage() {
                 <p className="text-dove-gray">Please provide your business details. Our sales representative will contact you with a customized quote within 24 hours.</p>
               </div>
               
-              <form className="flex flex-col gap-6">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold uppercase tracking-widest text-black/40 px-2">Contact Person</label>
-                    <input type="text" placeholder="Your Name" className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" />
+                    <input 
+                      required
+                      type="text" 
+                      placeholder="Your Name" 
+                      value={formData.name}
+                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" 
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold uppercase tracking-widest text-black/40 px-2">Business Name</label>
-                    <input type="text" placeholder="Company Name" className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" />
+                    <input 
+                      required
+                      type="text" 
+                      placeholder="Company Name" 
+                      value={formData.businessName}
+                      onChange={(e) => setFormData({...formData, businessName: e.target.value})}
+                      className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" 
+                    />
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold uppercase tracking-widest text-black/40 px-2">Phone / WhatsApp</label>
-                    <input type="tel" placeholder="+91 XXXXX XXXXX" className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" />
+                    <input 
+                      required
+                      type="tel" 
+                      placeholder="+91 XXXXX XXXXX" 
+                      value={formData.phone}
+                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                      className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" 
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold uppercase tracking-widest text-black/40 px-2">Email Address</label>
-                    <input type="email" placeholder="email@business.com" className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" />
+                    <input 
+                      required
+                      type="email" 
+                      placeholder="email@business.com" 
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" 
+                    />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold uppercase tracking-widest text-black/40 px-2">City</label>
-                    <input type="text" placeholder="Your City" className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" />
+                    <input 
+                      required
+                      type="text" 
+                      placeholder="Your City" 
+                      value={formData.city}
+                      onChange={(e) => setFormData({...formData, city: e.target.value})}
+                      className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" 
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold uppercase tracking-widest text-black/40 px-2">Estimated Monthly Volume</label>
-                    <select className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all appearance-none">
+                    <select 
+                      value={formData.volume}
+                      onChange={(e) => setFormData({...formData, volume: e.target.value})}
+                      className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all appearance-none"
+                    >
                       <option>50 - 100 Shirts</option>
                       <option>100 - 500 Shirts</option>
                       <option>500 - 1000 Shirts</option>
@@ -128,11 +231,29 @@ export default function WholesaleInquiryPage() {
 
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-bold uppercase tracking-widest text-black/40 px-2">Message / Special Requests</label>
-                  <textarea rows={4} placeholder="Tell us about your specific needs..." className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all resize-none"></textarea>
+                  <textarea 
+                    rows={4} 
+                    placeholder="Tell us about your specific needs..." 
+                    value={formData.message}
+                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all resize-none"
+                  ></textarea>
                 </div>
 
-                <AnimatedButton variant="black" className="w-full py-5 text-base font-bold flex items-center justify-center gap-3">
-                  Submit Inquiry <Send size={18} />
+                <AnimatedButton 
+                  disabled={isSubmitting}
+                  variant="black" 
+                  className={`w-full py-5 text-base font-bold flex items-center justify-center gap-3 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                >
+                  {isSubmitting ? (
+                    <motion.div 
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full"
+                    />
+                  ) : (
+                    <>Submit Inquiry <Send size={18} /></>
+                  )}
                 </AnimatedButton>
               </form>
             </div>

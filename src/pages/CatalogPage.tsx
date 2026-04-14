@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Search, Filter, Download, ChevronRight, Star } from "lucide-react";
-import { AnimatedButton } from "../components/Shared";
+import { AnimatedButton, BadgeIcon } from "../components/Shared";
 
 import { products } from "../data/products";
 
@@ -15,19 +15,44 @@ const categories = [
 ];
 
 export default function CatalogPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [activeCategory, setActiveCategory] = useState("All Shirts");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
+  const [sortBy, setSortBy] = useState("default"); // default, price-low, price-high
+
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q !== null) {
+      setSearchQuery(q);
+    }
+  }, [searchParams]);
 
   const filteredProducts = products.filter(product => {
     const matchesCategory = activeCategory === "All Shirts" || product.category === activeCategory;
     const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
+  }).sort((a, b) => {
+    const priceA = parseInt(a.price);
+    const priceB = parseInt(b.price);
+    if (sortBy === "price-low") return priceA - priceB;
+    if (sortBy === "price-high") return priceB - priceA;
+    return 0;
   });
+
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = () => {
+    setIsDownloading(true);
+    setTimeout(() => {
+      setIsDownloading(false);
+      alert("Price list download started! (Simulation)");
+    }, 2000);
+  };
 
   return (
     <div className="relative">
       {/* Hero Section */}
-      <section className="relative h-[50vh] min-h-[400px] flex flex-col justify-end items-center pb-20 overflow-hidden">
+      <section className="relative h-[50vh] min-h-[450px] flex flex-col justify-end items-center pb-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://picsum.photos/seed/sk-catalog-hero/1920/1080" 
@@ -46,10 +71,10 @@ export default function CatalogPage() {
               <div className="bg-white text-black text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">COLLECTIONS</div>
               <span className="text-white text-sm font-medium tracking-tight">Full Product Catalog</span>
             </div>
-            <h1 className="text-white text-5xl md:text-6xl font-medium tracking-tighter leading-tight">
+            <h1 className="text-white text-4xl md:text-6xl font-medium tracking-tighter leading-tight">
               Explore our range.
             </h1>
-            <p className="text-white/70 text-lg font-light tracking-tight max-w-2xl">
+            <p className="text-white/70 text-base md:text-lg font-light tracking-tight max-w-2xl">
               From formal boardrooms to casual weekends, our wholesale shirt collection covers every retail need with premium fabrics and perfect fits.
             </p>
           </div>
@@ -57,7 +82,7 @@ export default function CatalogPage() {
       </section>
 
       {/* Catalog Controls */}
-      <section className="sticky top-[100px] z-30 bg-white/80 backdrop-blur-xl border-b border-black/5 py-6 px-6 md:px-12">
+      <section className="sticky top-[80px] md:top-[100px] z-30 bg-white/80 backdrop-blur-xl border-b border-black/5 py-6 px-6 md:px-12">
         <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-8">
           {/* Category Filter */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 no-scrollbar w-full lg:w-auto">
@@ -67,8 +92,8 @@ export default function CatalogPage() {
                 onClick={() => setActiveCategory(cat)}
                 className={`px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 ${
                   activeCategory === cat 
-                    ? "bg-black text-white shadow-lg shadow-black/20" 
-                    : "bg-gallery text-black/60 hover:bg-black/5"
+                ? "bg-black text-white shadow-lg shadow-black/20" 
+                : "bg-gallery text-black/60 hover:bg-black/5"
                 }`}
               >
                 {cat}
@@ -88,11 +113,30 @@ export default function CatalogPage() {
                 className="w-full bg-gallery rounded-full pl-12 pr-6 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/5 transition-all"
               />
             </div>
-            <button className="p-3 bg-gallery rounded-full text-black/60 hover:bg-black/5 transition-all">
-              <Filter size={20} />
-            </button>
-            <AnimatedButton variant="black" className="hidden md:flex items-center gap-2 px-6 py-3">
-              Price List <Download size={16} />
+            <div className="relative flex items-center gap-2">
+              <button 
+                onClick={() => setSortBy(sortBy === "price-low" ? "price-high" : "price-low")}
+                className={`p-3 rounded-full transition-all flex items-center gap-2 ${sortBy !== "default" ? "bg-black text-white" : "bg-gallery text-black/60 hover:bg-black/5"}`}
+              >
+                <Filter size={20} />
+                {sortBy !== "default" && <span className="text-xs font-bold">{sortBy === "price-low" ? "Price: Low to High" : "Price: High to Low"}</span>}
+              </button>
+              {sortBy !== "default" && (
+                <button 
+                  onClick={() => setSortBy("default")}
+                  className="text-[10px] font-bold uppercase tracking-tighter opacity-40 hover:opacity-100 transition-opacity"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+            <AnimatedButton 
+              variant="black" 
+              className="hidden md:flex items-center gap-2 px-6 py-3"
+              onClick={handleDownload}
+              disabled={isDownloading}
+            >
+              {isDownloading ? "Downloading..." : "Price List"} <Download size={16} />
             </AnimatedButton>
           </div>
         </div>
@@ -122,9 +166,7 @@ export default function CatalogPage() {
                     />
                     {product.tag && (
                       <div className="absolute top-4 left-4 bg-white px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
-                        <div className="w-3.5 h-3.5 bg-black rounded-full flex items-center justify-center">
-                          <div className="w-1.5 h-1.5 border-t border-l border-white rotate-45 translate-x-0.5 translate-y-0.5" />
-                        </div>
+                        <BadgeIcon />
                         <span className="text-[10px] font-bold uppercase tracking-wider">{product.tag}</span>
                       </div>
                     )}
@@ -143,9 +185,11 @@ export default function CatalogPage() {
                         <span className="text-xs text-black/40 font-medium">Wholesale Price</span>
                         <span className="text-xl font-black tracking-tighter">₹{product.price}</span>
                       </div>
-                      <div className="w-10 h-10 bg-gallery rounded-full flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
-                        <ChevronRight size={20} />
-                      </div>
+                      <BadgeIcon 
+                        className="w-10 h-10 bg-gallery group-hover:bg-black transition-all" 
+                        icon={ChevronRight} 
+                        iconClassName="text-black group-hover:text-white"
+                      />
                     </div>
                   </div>
                 </Link>
@@ -192,11 +236,18 @@ export default function CatalogPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 relative z-10">
-            <AnimatedButton variant="white" className="px-12 py-5 font-bold text-base">
-              Talk to Sales
-            </AnimatedButton>
-            <AnimatedButton variant="transparent" className="px-12 py-5 font-bold text-base">
-              Download Full PDF
+            <Link to="/wholesale-inquiry">
+              <AnimatedButton variant="white" className="px-12 py-5 font-bold text-base w-full sm:w-auto">
+                Talk to Sales
+              </AnimatedButton>
+            </Link>
+            <AnimatedButton 
+              variant="transparent" 
+              className="px-12 py-5 font-bold text-base w-full sm:w-auto"
+              onClick={handleDownload}
+              disabled={isDownloading}
+            >
+              {isDownloading ? "Downloading..." : "Download Full PDF"}
             </AnimatedButton>
           </div>
         </div>

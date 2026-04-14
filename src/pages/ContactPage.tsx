@@ -1,6 +1,7 @@
+import React, { useState } from "react";
 import { motion } from "motion/react";
-import { Mail, Phone, MapPin, Clock, Send, MessageSquare } from "lucide-react";
-import { AnimatedButton } from "../components/Shared";
+import { Mail, Phone, MapPin, Clock, Send, MessageSquare, CheckCircle2 } from "lucide-react";
+import { AnimatedButton, BadgeIcon } from "../components/Shared";
 
 const ContactInfoCard = ({ icon, title, detail, subDetail }: any) => (
   <div className="bg-white p-10 rounded-3xl shadow-sm border border-black/5 flex flex-col gap-6 hover:shadow-md transition-shadow">
@@ -16,10 +17,68 @@ const ContactInfoCard = ({ icon, title, detail, subDetail }: any) => (
 );
 
 export default function ContactPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    businessName: "",
+    phone: "",
+    email: "",
+    message: ""
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 1500);
+  };
+
+  if (isSubmitted) {
+    return (
+      <div className="min-h-screen pt-32 pb-24 px-6 flex flex-col items-center justify-center text-center">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-24 h-24 bg-black text-white rounded-full flex items-center justify-center mb-8"
+        >
+          <CheckCircle2 size={48} />
+        </motion.div>
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-4xl md:text-6xl font-medium tracking-tighter mb-6"
+        >
+          Message Sent.
+        </motion.h1>
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-dove-gray text-lg md:text-xl max-w-lg mb-12"
+        >
+          Thank you for reaching out. We've received your inquiry and our team will get back to you within 24 hours.
+        </motion.p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <AnimatedButton variant="black" onClick={() => setIsSubmitted(false)}>Send Another Message</AnimatedButton>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative">
       {/* Hero Section - Consistent with Home/About */}
-      <section className="relative h-[60vh] min-h-[500px] flex flex-col justify-end items-center pb-24 overflow-hidden">
+      <section className="relative h-[50vh] min-h-[450px] flex flex-col justify-end items-center pb-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://picsum.photos/seed/sk-contact-hero/1920/1080" 
@@ -27,21 +86,21 @@ export default function ContactPage() {
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-black/60" />
           <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-t from-black to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 h-[100px] bg-gradient-to-t from-black/30 to-transparent backdrop-blur-xl" />
         </div>
         
-        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-8 pt-[160px]">
-          <div className="flex flex-col items-center text-center gap-6 max-w-3xl">
+        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6 pt-[120px]">
+          <div className="flex flex-col items-center text-center gap-4 max-w-3xl">
             <div className="bg-white/15 backdrop-blur-xs px-4 py-1 rounded-full flex items-center gap-2 border border-white/10">
               <div className="bg-white text-black text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">CONTACT</div>
               <span className="text-white text-sm font-medium tracking-tight">Get in touch with us</span>
             </div>
-            <h1 className="text-white text-6xl md:text-7xl font-medium tracking-tighter leading-tight">
-              Let's grow your <br /> business together.
+            <h1 className="text-white text-4xl md:text-6xl font-medium tracking-tighter leading-tight">
+              Let's grow your <br className="hidden md:block" /> business together.
             </h1>
-            <p className="text-white/80 text-lg font-light tracking-tight max-w-2xl">
+            <p className="text-white/80 text-base md:text-lg font-light tracking-tight max-w-2xl">
               Have questions about bulk orders, pricing, or shipping? Our team is here to help you restock your shelves with the best men's shirts in the market.
             </p>
           </div>
@@ -79,13 +138,11 @@ export default function ContactPage() {
             <div className="flex flex-col gap-10">
               <div className="flex flex-col gap-6">
                 <div className="bg-white px-4 py-1.5 rounded-full self-start flex items-center gap-2 shadow-sm border border-black/5">
-                  <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
-                    <div className="w-2.5 h-2.5 border-t border-l border-white rotate-45 translate-x-0.5 translate-y-0.5" />
-                  </div>
+                  <BadgeIcon />
                   <span className="text-sm font-medium uppercase tracking-wider">Wholesale Inquiry</span>
                 </div>
-                <h2 className="text-4xl md:text-6xl font-medium tracking-tighter leading-tight">Request a wholesale price list.</h2>
-                <p className="text-dove-gray text-lg font-medium leading-relaxed">
+                <h2 className="text-3xl md:text-6xl font-medium tracking-tighter leading-tight">Request a wholesale price list.</h2>
+                <p className="text-dove-gray text-base md:text-lg font-medium leading-relaxed">
                   Fill out the form below with your business details, and our sales team will get back to you with our latest catalog and bulk pricing.
                 </p>
               </div>
@@ -113,38 +170,81 @@ export default function ContactPage() {
             </div>
 
             <div className="bg-white p-8 md:p-12 rounded-[40px] shadow-sm">
-              <form className="flex flex-col gap-6">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold uppercase tracking-widest text-black/40 px-2">Full Name</label>
-                    <input type="text" placeholder="John Doe" className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" />
+                    <input 
+                      required
+                      type="text" 
+                      placeholder="John Doe" 
+                      value={formData.name}
+                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" 
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold uppercase tracking-widest text-black/40 px-2">Business Name</label>
-                    <input type="text" placeholder="Retail Store Name" className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" />
+                    <input 
+                      required
+                      type="text" 
+                      placeholder="Retail Store Name" 
+                      value={formData.businessName}
+                      onChange={(e) => setFormData({...formData, businessName: e.target.value})}
+                      className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" 
+                    />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold uppercase tracking-widest text-black/40 px-2">Phone Number</label>
-                    <input type="tel" placeholder="+91 XXXXX XXXXX" className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" />
+                    <input 
+                      required
+                      type="tel" 
+                      placeholder="+91 XXXXX XXXXX" 
+                      value={formData.phone}
+                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                      className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" 
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold uppercase tracking-widest text-black/40 px-2">Email Address</label>
-                    <input type="email" placeholder="john@example.com" className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" />
+                    <input 
+                      required
+                      type="email" 
+                      placeholder="john@example.com" 
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all" 
+                    />
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-bold uppercase tracking-widest text-black/40 px-2">Your Requirements</label>
-                  <textarea rows={4} placeholder="Tell us about the styles and quantities you need..." className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all resize-none"></textarea>
+                  <textarea 
+                    rows={4} 
+                    placeholder="Tell us about the styles and quantities you need..." 
+                    value={formData.message}
+                    onChange={(e) => setFormData({...formData, message: e.target.value})}
+                    className="bg-gallery rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-black/5 transition-all resize-none"
+                  ></textarea>
                 </div>
                 <AnimatedButton
+                  disabled={isSubmitting}
                   variant="black"
-                  className="w-full py-5 text-base font-bold flex items-center justify-center"
+                  className={`w-full py-5 text-base font-bold flex items-center justify-center ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
-                  <span className="flex items-center gap-3">
-                    Send Inquiry <Send size={18} />
-                  </span>
+                  {isSubmitting ? (
+                    <motion.div 
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full"
+                    />
+                  ) : (
+                    <span className="flex items-center gap-3">
+                      Send Inquiry <Send size={18} />
+                    </span>
+                  )}
                 </AnimatedButton>
               </form>
             </div>

@@ -1,17 +1,16 @@
 import { motion } from "motion/react";
 import { Star, ShieldCheck, Truck, Factory, Users, History } from "lucide-react";
-import { AnimatedButton } from "../components/Shared";
+import { AnimatedButton, BadgeIcon } from "../components/Shared";
+import { Link } from "react-router-dom";
 
 const SectionHeader = ({ tag, title, description }: any) => (
   <div className="flex flex-col gap-6 max-w-2xl">
     <div className="bg-white px-4 py-1.5 rounded-full self-start flex items-center gap-2 shadow-sm border border-black/5">
-      <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
-        <div className="w-2.5 h-2.5 border-t border-l border-white rotate-45 translate-x-0.5 translate-y-0.5" />
-      </div>
+      <BadgeIcon />
       <span className="text-sm font-medium uppercase tracking-wider">{tag}</span>
     </div>
-    <h2 className="text-4xl md:text-6xl font-medium tracking-tighter leading-tight">{title}</h2>
-    {description && <p className="text-dove-gray text-lg font-medium leading-relaxed">{description}</p>}
+    <h2 className="text-3xl md:text-6xl font-medium tracking-tighter leading-tight">{title}</h2>
+    {description && <p className="text-dove-gray text-base md:text-lg font-medium leading-relaxed">{description}</p>}
   </div>
 );
 
@@ -19,7 +18,7 @@ export default function AboutPage() {
   return (
     <div className="relative">
       {/* Hero Section - Exactly like Home but with About content and no carousel */}
-      <section className="relative h-screen min-h-[700px] flex flex-col justify-end items-center pb-24 overflow-hidden">
+      <section className="relative h-[50vh] min-h-[450px] flex flex-col justify-end items-center pb-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://picsum.photos/seed/sk-about-hero-final/1920/1080" 
@@ -27,43 +26,47 @@ export default function AboutPage() {
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-black/50" />
-          <div className="absolute bottom-0 left-0 right-0 h-[300px] bg-gradient-to-t from-black to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 h-[190px] bg-gradient-to-t from-black/30 to-transparent backdrop-blur-xl" />
+          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-t from-black to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-[100px] bg-gradient-to-t from-black/30 to-transparent backdrop-blur-xl" />
         </div>
         
-        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-12 pt-[160px]">
-          <div className="flex flex-col items-center text-center gap-6 max-w-3xl">
+        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6 pt-[120px]">
+          <div className="flex flex-col items-center text-center gap-4 max-w-3xl">
             <div className="bg-white/15 backdrop-blur-xs px-4 py-1 rounded-full flex items-center gap-2 border border-white/10">
               <div className="bg-white text-black text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">ABOUT</div>
               <span className="text-white text-sm font-medium tracking-tight">Know about S.K Enterprises</span>
             </div>
-            <h1 className="text-white text-6xl md:text-7xl font-medium tracking-tighter leading-[1.1]">
-              Timeless quality, <br /> modern wholesale.
+            <h1 className="text-white text-4xl md:text-6xl font-medium tracking-tighter leading-tight">
+              Timeless quality, <br className="hidden md:block" /> modern wholesale.
             </h1>
-            <p className="text-white/80 text-lg font-light tracking-tight max-w-2xl">
+            <p className="text-white/80 text-base md:text-lg font-light tracking-tight max-w-2xl">
               We focus on supplying essential men's shirts that remain relevant, durable, and profitable for your retail business across all seasons. S.K Enterprises is your partner in growth.
             </p>
-            <div className="flex items-center gap-4">
-              <AnimatedButton variant="white">
-                Our Story
-              </AnimatedButton>
-              <AnimatedButton variant="transparent">
-                Contact Us
-              </AnimatedButton>
+            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">
+              <a href="#story" className="w-full sm:w-auto">
+                <AnimatedButton variant="white" className="w-full px-8">
+                  Our Story
+                </AnimatedButton>
+              </a>
+              <Link to="/contact" className="w-full sm:w-auto">
+                <AnimatedButton variant="transparent" className="w-full px-8">
+                  Contact Us
+                </AnimatedButton>
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
       {/* Stats Section - Image 2 Style */}
-      <section className="py-32 px-6 md:px-12 max-w-screen-xl mx-auto">
-        <div className="text-center flex flex-col items-center gap-6 mb-20 max-w-3xl mx-auto">
+      <section className="py-20 md:py-32 px-6 md:px-12 max-w-screen-xl mx-auto">
+        <div className="text-center flex flex-col items-center gap-6 mb-16 md:mb-20 max-w-3xl mx-auto">
           <div className="bg-gallery px-4 py-1.5 rounded-full flex items-center gap-2">
             <div className="w-2 h-2 bg-black rounded-full" />
             <span className="text-sm font-bold uppercase tracking-wider">Our Impact</span>
           </div>
-          <h2 className="text-4xl md:text-6xl font-medium tracking-tighter leading-tight">
+          <h2 className="text-3xl md:text-6xl font-medium tracking-tighter leading-tight">
             More than wholesale, S.K Enterprises is a commitment to your growth.
           </h2>
         </div>
@@ -88,7 +91,7 @@ export default function AboutPage() {
       </section>
 
       {/* The Journey Section */}
-      <section className="bg-gallery py-32 px-6 md:px-12">
+      <section id="story" className="bg-gallery py-32 px-6 md:px-12">
         <div className="max-w-screen-xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="lg:col-span-1">
@@ -251,9 +254,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div className="flex flex-col gap-8">
               <div className="bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full self-start flex items-center gap-2 border border-white/10">
-                <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                  <div className="w-2.5 h-2.5 border-t border-l border-black rotate-45 translate-x-0.5 translate-y-0.5" />
-                </div>
+                <BadgeIcon className="bg-white" iconClassName="text-black" />
                 <span className="text-sm font-medium uppercase tracking-wider">Our Operations</span>
               </div>
               <h2 className="text-4xl md:text-6xl font-medium tracking-tighter leading-tight">A warehouse built for scale.</h2>

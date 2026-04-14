@@ -26,27 +26,29 @@ export default function FabricGuidePage() {
   return (
     <div className="relative">
       {/* Hero Section */}
-      <section className="relative h-[50vh] min-h-[400px] flex flex-col justify-end items-center pb-20 overflow-hidden">
+      <section className="relative h-[50vh] min-h-[450px] flex flex-col justify-end items-center pb-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://picsum.photos/seed/sk-fabrics/1920/1080" 
             alt="Fabric Textures" 
-            className="w-full h-full object-cover grayscale opacity-30"
+            className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-black/80" />
+          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-t from-black to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-[100px] bg-gradient-to-t from-black/30 to-transparent backdrop-blur-xl" />
         </div>
         
-        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6">
+        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6 pt-[120px]">
           <div className="flex flex-col items-center text-center gap-4 max-w-3xl">
-            <div className="bg-white/10 backdrop-blur-md px-4 py-1 rounded-full flex items-center gap-2 border border-white/10">
+            <div className="bg-white/15 backdrop-blur-xs px-4 py-1 rounded-full flex items-center gap-2 border border-white/10">
               <Info size={14} className="text-white" />
               <span className="text-white text-sm font-medium tracking-tight uppercase">Knowledge Base</span>
             </div>
-            <h1 className="text-white text-5xl md:text-6xl font-medium tracking-tighter leading-tight">
+            <h1 className="text-white text-4xl md:text-6xl font-medium tracking-tighter leading-tight">
               The S.K Fabric Guide.
             </h1>
-            <p className="text-white/60 text-lg font-light tracking-tight max-w-2xl">
+            <p className="text-white/70 text-base md:text-lg font-light tracking-tight max-w-2xl">
               Understanding the science behind our shirts. We help you choose the right fabric for your region's climate and your customers' preferences.
             </p>
           </div>
@@ -87,8 +89,8 @@ export default function FabricGuidePage() {
       <section className="py-32 bg-black text-white px-6 md:px-12">
         <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row gap-20 items-center">
           <div className="lg:w-1/2 flex flex-col gap-8">
-            <h2 className="text-4xl md:text-6xl font-medium tracking-tighter leading-tight">What is GSM?</h2>
-            <p className="text-white/60 text-xl leading-relaxed">
+            <h2 className="text-3xl md:text-6xl font-medium tracking-tighter leading-tight">What is GSM?</h2>
+            <p className="text-white/60 text-lg md:text-xl leading-relaxed">
               GSM stands for <strong>Grams per Square Meter</strong>. It measures the weight and density of the fabric. In the wholesale market, knowing the GSM is key to understanding the "feel" of the shirt without touching it.
             </p>
             <div className="flex flex-col gap-6">

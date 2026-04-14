@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { motion } from "motion/react";
-import { Truck, ShieldCheck, Clock, RefreshCcw, Package, MapPin } from "lucide-react";
+import { Truck, ShieldCheck, Clock, RefreshCcw, Package, MapPin, Download } from "lucide-react";
 import { AnimatedButton } from "../components/Shared";
+import { Link } from "react-router-dom";
 
 const PolicySection = ({ icon, title, children }: any) => (
   <div className="flex flex-col gap-6 p-10 bg-white rounded-[40px] border border-black/5 shadow-sm">
@@ -17,28 +19,40 @@ const PolicySection = ({ icon, title, children }: any) => (
 );
 
 export default function ShippingPolicyPage() {
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = () => {
+    setIsDownloading(true);
+    setTimeout(() => {
+      setIsDownloading(false);
+      alert("Shipping rate card download started! (Simulation)");
+    }, 2000);
+  };
+
   return (
     <div className="relative">
       {/* Hero Section */}
-      <section className="relative h-[40vh] min-h-[350px] flex flex-col justify-end items-center pb-16 overflow-hidden">
+      <section className="relative h-[50vh] min-h-[450px] flex flex-col justify-end items-center pb-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://picsum.photos/seed/sk-logistics/1920/1080" 
             alt="Logistics and Shipping" 
-            className="w-full h-full object-cover grayscale opacity-40"
+            className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-transparent" />
+          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute bottom-0 left-0 right-0 h-[200px] bg-gradient-to-t from-black to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-[100px] bg-gradient-to-t from-black/30 to-transparent backdrop-blur-xl" />
         </div>
         
-        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6">
+        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6 pt-[120px]">
           <div className="flex flex-col items-center text-center gap-4 max-w-3xl">
-            <div className="bg-black/5 px-4 py-1 rounded-full flex items-center gap-2 border border-black/5">
-              <div className="bg-black text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">LOGISTICS</div>
-              <span className="text-black text-sm font-medium tracking-tight">Shipping & Returns Policy</span>
+            <div className="bg-white/15 backdrop-blur-xs px-4 py-1 rounded-full flex items-center gap-2 border border-white/10">
+              <div className="bg-white text-black text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">LOGISTICS</div>
+              <span className="text-white text-sm font-medium tracking-tight">Shipping & Returns Policy</span>
             </div>
-            <h1 className="text-black text-5xl md:text-6xl font-medium tracking-tighter leading-tight">
-              Reliable delivery, <br /> guaranteed.
+            <h1 className="text-white text-4xl md:text-6xl font-medium tracking-tighter leading-tight">
+              Reliable delivery, <br className="hidden md:block" /> guaranteed.
             </h1>
           </div>
         </div>
@@ -84,10 +98,10 @@ export default function ShippingPolicyPage() {
       <section className="py-32 bg-black text-white px-6 md:px-12">
         <div className="max-w-screen-xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="flex flex-col gap-8">
-            <h2 className="text-4xl md:text-6xl font-medium tracking-tighter leading-tight">
+            <h2 className="text-3xl md:text-6xl font-medium tracking-tighter leading-tight">
               Built to survive the journey.
             </h2>
-            <p className="text-white/60 text-xl leading-relaxed">
+            <p className="text-white/60 text-lg md:text-xl leading-relaxed">
               We don't just throw shirts in a box. Our wholesale packaging is designed to withstand the rigors of long-distance transport, ensuring your shirts arrive crisp and ready for the shelf.
             </p>
             <div className="grid grid-cols-2 gap-8 mt-4">
@@ -124,9 +138,18 @@ export default function ShippingPolicyPage() {
           <MapPin size={48} className="text-black/20" />
           <h2 className="text-4xl font-bold tracking-tight">Still have questions about logistics?</h2>
           <p className="text-dove-gray text-lg">Our logistics manager is available to discuss custom shipping arrangements for your specific region.</p>
-          <div className="flex gap-4">
-            <AnimatedButton variant="black" className="px-12 py-4">Contact Logistics</AnimatedButton>
-            <AnimatedButton variant="transparent" className="px-12 py-4 border-black/10 text-black">Download Rate Card</AnimatedButton>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Link to="/contact">
+              <AnimatedButton variant="black" className="px-12 py-4 w-full sm:w-auto">Contact Logistics</AnimatedButton>
+            </Link>
+            <AnimatedButton 
+              variant="transparent" 
+              className="px-12 py-4 border-black/10 text-black w-full sm:w-auto"
+              onClick={handleDownload}
+              disabled={isDownloading}
+            >
+              {isDownloading ? "Downloading..." : "Download Rate Card"}
+            </AnimatedButton>
           </div>
         </div>
       </section>

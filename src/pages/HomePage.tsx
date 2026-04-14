@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { Search, Mail, Star, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { AnimatedButton } from "../components/Shared";
+import { AnimatedButton, BadgeIcon } from "../components/Shared";
 import { products } from "../data/products";
 
 const ProductCard = ({ id, image, title, price, oldPrice, tag, colors }: any) => {
@@ -19,9 +19,7 @@ const ProductCard = ({ id, image, title, price, oldPrice, tag, colors }: any) =>
         />
         {tag && (
           <div className="absolute top-4 left-4 bg-white px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
-            <div className="w-3.5 h-3.5 bg-black rounded-full flex items-center justify-center">
-              <div className="w-1.5 h-1.5 border-t border-l border-white rotate-45 translate-x-0.5 translate-y-0.5" />
-            </div>
+            <BadgeIcon />
             <span className="text-[12px] font-medium">{tag}</span>
           </div>
         )}
@@ -40,30 +38,38 @@ const ProductCard = ({ id, image, title, price, oldPrice, tag, colors }: any) =>
             {oldPrice && <span className="text-sm text-silver-chalice line-through font-light">₹{oldPrice}</span>}
           </div>
         </div>
-        <div className="w-8 h-8 bg-gallery rounded-full flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
-          <ChevronRight size={16} />
-        </div>
+        <BadgeIcon 
+          className="w-8 h-8 bg-gallery group-hover:bg-black transition-all" 
+          icon={ChevronRight} 
+          iconClassName="text-black group-hover:text-white"
+        />
       </div>
     </Link>
   );
 };
 
-const SectionHeader = ({ tag, title, buttonText }: any) => {
+const SectionHeader = ({ tag, title, buttonText, buttonLink = "/catalog", onButtonClick }: any) => {
   return (
-    <div className="flex flex-col md:flex-row justify-between items-end gap-8 mb-12">
+    <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-12">
       <div className="flex flex-col gap-5 max-w-lg">
         <div className="bg-white px-4 py-1.5 rounded-full self-start flex items-center gap-2 shadow-sm">
-          <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
-            <div className="w-2.5 h-2.5 border-t border-l border-white rotate-45 translate-x-0.5 translate-y-0.5" />
-          </div>
+          <BadgeIcon />
           <span className="text-sm font-medium">{tag}</span>
         </div>
-        <h2 className="text-4xl md:text-5xl font-medium tracking-tight leading-tight">{title}</h2>
+        <h2 className="text-3xl md:text-5xl font-medium tracking-tight leading-tight">{title}</h2>
       </div>
       {buttonText && (
-        <AnimatedButton variant="black" className="shadow-lg">
-          {buttonText}
-        </AnimatedButton>
+        onButtonClick ? (
+          <AnimatedButton variant="black" className="shadow-lg whitespace-nowrap" onClick={onButtonClick}>
+            {buttonText}
+          </AnimatedButton>
+        ) : (
+          <Link to={buttonLink}>
+            <AnimatedButton variant="black" className="shadow-lg whitespace-nowrap">
+              {buttonText}
+            </AnimatedButton>
+          </Link>
+        )
       )}
     </div>
   );
@@ -95,9 +101,11 @@ const CollectionCard = ({ image, tag, title, description, priceRange }: any) => 
               <span className="text-base font-medium">${priceRange.start} — ${priceRange.end}</span>
             </div>
           </div>
-          <AnimatedButton variant="black" className="px-6 py-2.5">
-            All collections
-          </AnimatedButton>
+          <Link to="/catalog">
+            <AnimatedButton variant="black" className="px-6 py-2.5">
+              All collections
+            </AnimatedButton>
+          </Link>
         </div>
       </div>
     </div>
@@ -108,7 +116,7 @@ export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-screen min-h-[700px] flex flex-col justify-end items-center pb-12 overflow-hidden">
+      <section className="relative min-h-[600px] md:h-screen md:min-h-[700px] flex flex-col justify-end items-center pb-12 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src="https://picsum.photos/seed/wholesale-shirts-hero/1920/1080" 
@@ -121,30 +129,34 @@ export default function HomePage() {
           <div className="absolute bottom-0 left-0 right-0 h-[190px] bg-gradient-to-t from-black/30 to-transparent backdrop-blur-xl" />
         </div>
         
-        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-12 pt-[160px]">
+        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-12 pt-[140px] md:pt-[160px]">
           <div className="flex flex-col items-center text-center gap-6 max-w-3xl">
             <div className="bg-white/15 backdrop-blur-xs px-4 py-1 rounded-full flex items-center gap-2 border border-white/10">
               <div className="bg-white text-black text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">EST. 2011</div>
               <span className="text-white text-sm font-medium tracking-tight">Wholesale Shirts Supplier</span>
             </div>
-            <h1 className="text-white text-6xl md:text-6xl font-medium tracking-tighter leading-[1.1]">
+            <h1 className="text-white text-4xl md:text-6xl font-medium tracking-tighter leading-[1.1]">
               Premium Men's Shirts, Direct from the Factory.
             </h1>
-            <p className="text-white/80 text-lg font-light tracking-tight max-w-2xl">
+            <p className="text-white/80 text-base md:text-lg font-light tracking-tight max-w-2xl">
               S.K Enterprises has been a trusted name in the wholesale textile market for over 15 years. We specialize exclusively in high-quality men's shirts, providing retailers with the best margins and ready-to-dispatch stock.
             </p>
-            <div className="flex items-center gap-4">
-              <AnimatedButton variant="white">
-                View Current Stock
-              </AnimatedButton>
-              <AnimatedButton variant="transparent">
-                Get a Quote
-              </AnimatedButton>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <Link to="/catalog" className="w-full sm:w-auto">
+                <AnimatedButton variant="white" className="w-full">
+                  View Current Stock
+                </AnimatedButton>
+              </Link>
+              <Link to="/wholesale-inquiry" className="w-full sm:w-auto">
+                <AnimatedButton variant="transparent" className="w-full">
+                  Get a Quote
+                </AnimatedButton>
+              </Link>
             </div>
           </div>
           
           {/* Hero Carousel */}
-          <div className="flex items-end gap-1.5 overflow-hidden pb-4">
+          <div className="hidden sm:flex items-end gap-1.5 overflow-hidden pb-4">
             {[
               { label: 'Oxford', img: 'https://picsum.photos/seed/oxford-shirt/140/105' },
               { label: 'Linen', img: 'https://picsum.photos/seed/linen-shirt/140/105' },
@@ -174,7 +186,8 @@ export default function HomePage() {
         <SectionHeader 
           tag="What We Supply" 
           title="Bulk collections for retailers and resellers" 
-          buttonText="Download Catalog" 
+          buttonText="Download Catalog PDF" 
+          onButtonClick={() => alert("Catalog download started! (Simulation)")}
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {[ 
@@ -201,7 +214,7 @@ export default function HomePage() {
       </section>
       
       {/* About Section */}
-      <section className="relative h-[700px] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[600px] py-20 md:h-[700px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <img src="https://picsum.photos/seed/clothing-warehouse-stock/1920/800" alt="Wholesale Warehouse" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
           <div className="absolute inset-0 bg-black/60" />
@@ -211,17 +224,21 @@ export default function HomePage() {
             <div className="bg-white text-black text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">OUR STORY</div>
             <span className="text-white text-sm font-medium tracking-tight">From the Market to Your Screen</span>
           </div>
-          <h2 className="text-white text-5xl md:text-6xl font-medium tracking-tight">Reliable stock you can trust</h2>
-          <p className="text-white/80 text-lg font-medium leading-relaxed">
+          <h2 className="text-white text-3xl md:text-6xl font-medium tracking-tight">Reliable stock you can trust</h2>
+          <p className="text-white/80 text-base md:text-lg font-medium leading-relaxed">
             We started as a small setup in the wholesale mandi, dealing face-to-face with shop owners who needed reliable stock. Over the years, we’ve learned exactly what sells and what sits on the shelf. Moving online doesn't change how we do business—we still focus on the same thing: giving you the best margins and consistent quality so your customers keep coming back to your store.
           </p>
-          <div className="flex items-center gap-4">
-            <AnimatedButton variant="white" className="py-3.5">
-              View Full Catalog
-            </AnimatedButton>
-            <AnimatedButton variant="transparent" className="py-3.5">
-              Contact Our Team
-            </AnimatedButton>
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <Link to="/catalog" className="w-full sm:w-auto">
+              <AnimatedButton variant="white" className="w-full py-3.5">
+                View Full Catalog
+              </AnimatedButton>
+            </Link>
+            <Link to="/contact" className="w-full sm:w-auto">
+              <AnimatedButton variant="transparent" className="w-full py-3.5">
+                Contact Our Team
+              </AnimatedButton>
+            </Link>
           </div>
         </div>
       </section>
@@ -277,9 +294,7 @@ export default function HomePage() {
         <div className="max-w-screen-xl mx-auto px-6 md:px-12">
           <div className="flex flex-col items-center text-center gap-6 mb-20 max-w-lg mx-auto">
             <div className="bg-white px-4 py-1.5 rounded-full flex items-center gap-2 shadow-sm">
-              <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
-                <div className="w-2.5 h-2.5 border-t border-l border-white rotate-45 translate-x-0.5 translate-y-0.5" />
-              </div>
+              <BadgeIcon />
               <span className="text-sm font-medium">Process</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-medium tracking-tight leading-tight">How to get your order</h2>
@@ -306,9 +321,7 @@ export default function HomePage() {
       <section className="py-32 px-6 md:px-12 max-w-screen-xl mx-auto">
         <div className="flex flex-col items-center text-center gap-6 mb-20 max-w-lg mx-auto">
           <div className="bg-white px-4 py-1.5 rounded-full flex items-center gap-2 shadow-sm">
-            <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
-              <div className="w-2.5 h-2.5 border-t border-l border-white rotate-45 translate-x-0.5 translate-y-0.5" />
-            </div>
+            <BadgeIcon />
             <span className="text-sm font-medium">Why Choose Us</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-medium tracking-tight leading-tight">Real reasons to work with us</h2>
@@ -336,6 +349,22 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* Partners Logo Strip */}
+      <section className="py-20 bg-gallery/50 border-y border-black/5 overflow-hidden">
+        <div className="max-w-screen-xl mx-auto px-6 md:px-12">
+          <div className="flex flex-col items-center gap-12">
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-black/30">Supplying to major retail chains across India</span>
+            <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-30 grayscale hover:grayscale-0 transition-all duration-700">
+              {["V-Mart", "Reliance Trends", "Pantaloons", "Max Fashion", "Zudio"].map((partner) => (
+                <div key={partner} className="text-2xl md:text-3xl font-black tracking-tighter italic">
+                  {partner}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
       
       {/* Testimonials Section */}
       <section className="py-32 bg-black text-white px-6 md:px-12 overflow-hidden">
@@ -350,9 +379,16 @@ export default function HomePage() {
                 Trusted by 2,500+ <br /> store owners.
               </h2>
             </div>
-            <div className="flex flex-col gap-2 text-right">
-              <div className="text-5xl font-black tracking-tighter">4.9/5</div>
-              <div className="text-white/40 text-sm font-bold uppercase tracking-widest">Average Rating</div>
+            <div className="flex flex-col gap-6 items-end">
+              <div className="flex flex-col gap-2 text-right">
+                <div className="text-5xl font-black tracking-tighter">4.9/5</div>
+                <div className="text-white/40 text-sm font-bold uppercase tracking-widest">Average Rating</div>
+              </div>
+              <Link to="/contact">
+                <AnimatedButton variant="transparent" className="whitespace-nowrap">
+                  Read all reviews
+                </AnimatedButton>
+              </Link>
             </div>
           </div>
 
@@ -394,92 +430,28 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Blog Section */}
-      <section className="py-32 px-6 md:px-12 max-w-screen-xl mx-auto">
-        <SectionHeader 
-          tag="BUSINESS INSIGHTS" 
-          title="Tips for Retailers & Resellers" 
-          buttonText="Read all articles" 
-        />
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-col md:flex-row bg-gallery rounded-3xl overflow-hidden min-h-[480px] group cursor-pointer">
-            <div className="md:w-1/2 overflow-hidden">
-              <img src="https://picsum.photos/seed/fabric-rolls-wholesale/1200/800" alt="Fabric Quality" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
-            </div>
-            <div className="md:w-1/2 p-10 md:p-16 flex flex-col justify-center gap-10">
-              <div className="flex flex-col gap-8">
-                <div className="bg-white px-5 py-2 rounded-full self-start text-sm font-semibold shadow-sm tracking-wide">FABRIC GUIDE</div>
-                <h3 className="text-4xl md:text-5xl font-medium tracking-tight leading-tight">How to judge shirt fabric quality before buying bulk</h3>
-                <p className="text-dove-gray text-lg font-medium leading-relaxed">
-                  A quick guide for shop owners on thread counts, GSM, and blend ratios to ensure your customers keep coming back.
-                </p>
-              </div>
-              <div className="flex items-center gap-6 text-sm font-semibold text-black/60">
-                <div className="flex items-center gap-2">
-                  <Mail size={18} />
-                  <span>10 min read</span>
-                </div>
-                <div className="w-px h-5 bg-black/10" />
-                <div className="flex items-center gap-2">
-                  <Mail size={18} />
-                  <span>Feb 15, 2026</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
-              { tag: "Inventory Management", title: "5 ways to manage your shop's stock during the festive rush", time: "8 min read", date: "Jan 10, 2026", img: "https://picsum.photos/seed/clothing-inventory-management/800/600" },
-              { tag: "Pricing Strategy", title: "Why direct-from-source pricing is key to your retail margins", time: "6 min read", date: "Dec 22, 2025", img: "https://picsum.photos/seed/wholesale-business-pricing/800/600" },
-            ].map((blog, i) => (
-              <div key={i} className="flex flex-col md:flex-row bg-gallery rounded-3xl overflow-hidden min-h-[280px] group cursor-pointer">
-                <div className="md:w-1/2 overflow-hidden">
-                  <img src={blog.img} alt="Blog" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" referrerPolicy="no-referrer" />
-                </div>
-                <div className="md:w-1/2 p-8 flex flex-col justify-between gap-6">
-                  <div className="flex flex-col gap-6">
-                    <div className="bg-white px-4 py-1.5 rounded-full self-start text-[12px] font-bold shadow-sm tracking-widest uppercase">{blog.tag}</div>
-                    <h4 className="text-2xl font-medium tracking-tight leading-snug">{blog.title}</h4>
-                  </div>
-                  <div className="flex items-center gap-5 text-[13px] font-semibold text-boulder">
-                    <div className="flex items-center gap-2">
-                      <Mail size={16} />
-                      <span>{blog.time}</span>
-                    </div>
-                    <div className="w-px h-4 bg-black/10" />
-                    <div className="flex items-center gap-2">
-                      <Mail size={16} />
-                      <span>{blog.date}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      
       {/* CTA Section */}
       <section className="py-32 px-6 md:px-12 max-w-screen-xl mx-auto flex flex-col items-center text-center">
         <div className="flex flex-col items-center gap-8 mb-16 max-w-2xl">
           <div className="bg-white px-4 py-1.5 rounded-full flex items-center gap-2 shadow-sm">
-            <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
-              <div className="w-2.5 h-2.5 border-t border-l border-white rotate-45 translate-x-0.5 translate-y-0.5" />
-            </div>
+            <BadgeIcon />
             <span className="text-sm font-medium">Ready to restock?</span>
           </div>
           <h2 className="text-4xl md:text-6xl font-medium tracking-tight leading-tight">Ready to restock your shelves?</h2>
           <p className="text-dove-gray text-lg font-medium leading-relaxed">
             Don't wait for the peak season to hit and prices to go up. Get your wholesale shirts sorted today and stay ahead of the local competition.
           </p>
-          <div className="flex items-center gap-5">
-            <AnimatedButton variant="black" className="px-10 py-4 font-semibold shadow-2xl">
-              Request Wholesale Price List
-            </AnimatedButton>
-            <AnimatedButton variant="white" className="px-10 py-4 font-semibold border border-black/5">
-              Contact Our Team
-            </AnimatedButton>
+          <div className="flex flex-col sm:flex-row items-center gap-5">
+            <Link to="/wholesale-inquiry">
+              <AnimatedButton variant="black" className="px-10 py-4 font-semibold shadow-2xl">
+                Request Wholesale Price List
+              </AnimatedButton>
+            </Link>
+            <Link to="/contact">
+              <AnimatedButton variant="white" className="px-10 py-4 font-semibold border border-black/5">
+                Contact Our Team
+              </AnimatedButton>
+            </Link>
           </div>
         </div>
       </section>

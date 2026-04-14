@@ -80,8 +80,10 @@ const SizeGuideModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
 export default function ProductDetailPage() {
   const { id } = useParams();
   const product = products.find(p => p.id === Number(id));
-  const [activeImage, setActiveImage] = useState("");
+  const [activeImage, setActiveImage] = useState(product?.image || "");
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
+  const [selectedTier, setSelectedTier] = useState(0);
+  const [selectedSize, setSelectedSize] = useState("M");
 
   useEffect(() => {
     if (product) {
@@ -112,7 +114,7 @@ export default function ProductDetailPage() {
   ];
 
   return (
-    <div className="pt-32 pb-24">
+    <div className="pt-40 pb-24">
       <SizeGuideModal isOpen={isSizeGuideOpen} onClose={() => setIsSizeGuideOpen(false)} />
       <div className="max-w-screen-xl mx-auto px-6 md:px-12">
         {/* Breadcrumbs */}
@@ -148,7 +150,7 @@ export default function ProductDetailPage() {
           {/* Product Info */}
           <div className="flex flex-col gap-10">
             <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <span className="text-sm font-bold uppercase tracking-widest text-black/40">{product.category}</span>
                 {product.tag && (
                   <span className="bg-black text-white text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">
@@ -156,10 +158,10 @@ export default function ProductDetailPage() {
                   </span>
                 )}
               </div>
-              <h1 className="text-4xl md:text-6xl font-medium tracking-tighter leading-tight">
+              <h1 className="text-3xl md:text-6xl font-medium tracking-tighter leading-tight">
                 {product.title}
               </h1>
-              <div className="flex items-baseline gap-4 mt-2">
+              <div className="flex flex-wrap items-baseline gap-4 mt-2">
                 <span className="text-4xl font-black tracking-tighter">₹{product.price}</span>
                 <span className="text-black/40 font-medium">per unit (Wholesale)</span>
               </div>
@@ -187,10 +189,14 @@ export default function ProductDetailPage() {
               </div>
               <div className="grid grid-cols-3 gap-4">
                 {pricingTiers.map((tier, i) => (
-                  <div key={i} className={`flex flex-col gap-1 p-4 rounded-2xl border ${i === 0 ? 'bg-white border-black/10' : 'bg-transparent border-black/5'}`}>
+                  <button 
+                    key={i} 
+                    onClick={() => setSelectedTier(i)}
+                    className={`flex flex-col gap-1 p-4 rounded-2xl border transition-all text-left ${selectedTier === i ? 'bg-white border-black ring-2 ring-black/5' : 'bg-transparent border-black/5 hover:border-black/20'}`}
+                  >
                     <span className="text-[10px] font-bold text-black/40 uppercase tracking-tight">{tier.range}</span>
                     <span className="text-xl font-black tracking-tighter">₹{tier.price}</span>
-                  </div>
+                  </button>
                 ))}
               </div>
               <p className="text-xs text-dove-gray italic">*Prices are exclusive of GST and shipping.</p>
@@ -209,9 +215,13 @@ export default function ProductDetailPage() {
               </div>
               <div className="flex gap-3">
                 {["S", "M", "L", "XL", "XXL"].map(size => (
-                  <div key={size} className="w-12 h-12 rounded-xl border border-black/10 flex items-center justify-center font-bold hover:bg-black hover:text-white transition-all cursor-default">
+                  <button 
+                    key={size} 
+                    onClick={() => setSelectedSize(size)}
+                    className={`w-12 h-12 rounded-xl border flex items-center justify-center font-bold transition-all ${selectedSize === size ? 'bg-black text-white border-black shadow-lg' : 'border-black/10 hover:border-black/30'}`}
+                  >
                     {size}
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>
@@ -223,23 +233,31 @@ export default function ProductDetailPage() {
                   Inquire for Bulk <ArrowRight size={18} />
                 </AnimatedButton>
               </Link>
-              <AnimatedButton variant="transparent" className="px-8 py-5 font-bold text-black border-black/10">
-                Download Catalog
-              </AnimatedButton>
+              <Link to="/contact" className="flex-1 sm:flex-none">
+                <AnimatedButton variant="transparent" className="w-full px-8 py-5 font-bold text-black border-black/10">
+                  Request Sample
+                </AnimatedButton>
+              </Link>
             </div>
 
             {/* Trust Badges */}
-            <div className="grid grid-cols-3 gap-4 pt-4">
-              <div className="flex flex-col items-center text-center gap-2">
-                <ShieldCheck size={24} className="text-black/20" />
+            <div className="flex items-center justify-between pt-8 border-t border-black/5">
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="w-12 h-12 bg-gallery rounded-full flex items-center justify-center text-black/40">
+                  <ShieldCheck size={24} />
+                </div>
                 <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">QC Verified</span>
               </div>
-              <div className="flex flex-col items-center text-center gap-2">
-                <Truck size={24} className="text-black/20" />
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="w-12 h-12 bg-gallery rounded-full flex items-center justify-center text-black/40">
+                  <Truck size={24} />
+                </div>
                 <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Fast Dispatch</span>
               </div>
-              <div className="flex flex-col items-center text-center gap-2">
-                <Package size={24} className="text-black/20" />
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="w-12 h-12 bg-gallery rounded-full flex items-center justify-center text-black/40">
+                  <Package size={24} />
+                </div>
                 <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Bulk Ready</span>
               </div>
             </div>
