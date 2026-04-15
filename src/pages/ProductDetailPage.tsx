@@ -170,7 +170,7 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
-            <p className="text-dove-gray text-lg leading-relaxed">
+            <p className="text-dove-gray text-base leading-relaxed">
               {product.description}
             </p>
 

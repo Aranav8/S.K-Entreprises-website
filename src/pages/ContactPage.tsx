@@ -156,7 +156,7 @@ export default function ContactPage() {
             <h1 className="text-white text-4xl md:text-6xl font-medium tracking-tighter leading-tight">
               Let's grow your business together.
             </h1>
-            <p className="text-white/70 text-base md:text-lg font-light tracking-tight max-w-2xl">
+            <p className="text-white/70 text-base font-light tracking-tight max-w-2xl">
               Have questions about bulk orders, pricing, or shipping? Our team is here to help you restock your shelves with the best men's shirts in the market.
             </p>
           </div>

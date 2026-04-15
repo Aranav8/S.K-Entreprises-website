@@ -48,7 +48,7 @@ export default function AboutPage() {
             <h1 className="text-white text-4xl md:text-6xl font-medium tracking-tighter leading-tight">
               Timeless quality, modern wholesale.
             </h1>
-            <p className="text-white/70 text-base md:text-lg font-light tracking-tight max-w-2xl">
+            <p className="text-white/70 text-base font-light tracking-tight max-w-2xl">
               We focus on supplying essential men's shirts that remain relevant, durable, and profitable for your retail business across all seasons. S.K Enterprises is your partner in growth.
             </p>
             {/* <div className="flex flex-col sm:flex-row items-center gap-4 mt-4">

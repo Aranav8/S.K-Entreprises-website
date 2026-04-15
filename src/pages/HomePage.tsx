@@ -166,7 +166,7 @@ export default function HomePage() {
             <h1 className="text-white text-3xl md:text-6xl font-medium tracking-tighter leading-[1.1]">
               Premium Men's Shirts, Direct from the Factory.
             </h1>
-            <p className="text-white/80 text-sm md:text-lg font-light tracking-tight max-w-2xl px-4 md:px-0">
+            <p className="text-white/80 text-sm md:text-base font-light tracking-tight max-w-2xl px-4 md:px-0">
               S.K Enterprises has been a trusted name in the wholesale textile market for over 15 years. We specialize exclusively in high-quality men's shirts.
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-3 md:gap-4 w-full sm:w-auto">
@@ -386,7 +386,7 @@ export default function HomePage() {
               <BadgeIcon />
               <span className="text-sm font-medium uppercase tracking-wider">Help Center</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-medium tracking-tight">Frequently Asked Questions</h2>
+            <h2 className="text-3xl md:text-5xl font-medium tracking-tight">Frequently Asked Questions</h2>
           </div>
 
           <div className="max-w-3xl mx-auto flex flex-col gap-4">
@@ -412,14 +412,14 @@ export default function HomePage() {
                 a: "Absolutely. We welcome our retail partners to visit our Gandhi Nagar warehouse in New Delhi for a face-to-face consultation and to see our latest collections in person." 
               }
             ].map((item, i) => (
-              <details key={i} className="group bg-white rounded-[32px] border border-black/5 overflow-hidden transition-all duration-500">
-                <summary className="flex items-center justify-between p-8 cursor-pointer list-none list-inside">
-                  <span className="text-xl font-bold tracking-tight">{item.q}</span>
-                  <div className="w-10 h-10 bg-gallery rounded-full flex items-center justify-center group-open:rotate-180 transition-transform duration-500">
-                    <ChevronRight size={20} className="rotate-90" />
+              <details key={i} className="group bg-white rounded-[24px] md:rounded-[32px] border border-black/5 overflow-hidden transition-all duration-500">
+                <summary className="flex items-center justify-between p-5 md:p-8 cursor-pointer list-none list-inside">
+                  <span className="text-lg md:text-xl font-bold tracking-tight">{item.q}</span>
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-gallery rounded-full flex items-center justify-center group-open:rotate-180 transition-transform duration-500">
+                    <ChevronRight size={18} className="rotate-90" />
                   </div>
                 </summary>
-                <div className="px-8 pb-8 text-dove-gray text-lg leading-relaxed">
+                <div className="px-5 md:px-8 pb-5 md:pb-8 text-dove-gray text-base md:text-lg leading-relaxed">
                   {item.a}
                 </div>
               </details>

@@ -7,10 +7,10 @@ export default function LegalPage() {
       <div className="flex flex-col gap-12">
         <div className="flex flex-col gap-4">
           <h1 className="text-5xl font-medium tracking-tighter">Privacy & Terms</h1>
-          <p className="text-dove-gray text-lg">Last updated: April 2026</p>
+          <p className="text-dove-gray text-base">Last updated: April 2026</p>
         </div>
 
-        <div className="prose prose-lg max-w-none text-dove-gray space-y-8">
+        <div className="prose prose-sm md:prose-base max-w-none text-dove-gray space-y-8">
           <section className="flex flex-col gap-4">
             <h2 className="text-2xl font-bold text-black tracking-tight">1. Wholesale Agreement</h2>
             <p>By accessing this website and placing a wholesale order with S.K Enterprises, you agree to our business terms. We operate strictly as a B2B entity. All orders are subject to stock availability and payment confirmation.</p>
