@@ -144,7 +144,6 @@ export const Navbar = () => {
               <Link to="/about" className="hover:text-white/60 transition-colors">About Us</Link>
               <Link to="/catalog" className="hover:text-white/60 transition-colors">Catalog</Link>
               <Link to="/wholesale-inquiry" className="hover:text-white/60 transition-colors">Wholesale Inquiry</Link>
-              <Link to="/fabric-guide" className="hover:text-white/60 transition-colors">Fabric Guide</Link>
               <Link to="/shipping-policy" className="hover:text-white/60 transition-colors">Shipping & Returns</Link>
               <Link to="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
             </div>
@@ -250,20 +249,24 @@ export const Navbar = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      {/* Top Banner */}
-      <div className="bg-black text-white py-2.5 overflow-hidden whitespace-nowrap">
-        <div className="flex animate-marquee gap-12 text-[12px] font-medium uppercase tracking-tight">
-          {[...Array(10)].map((_, i) => (
-            <span key={i} className="flex items-center gap-4">
-              <span>15+ Years in Wholesale</span>
-              <span className="w-1 h-1 bg-white/30 rounded-full" />
-              <span>Ready Stock Always</span>
-              <span className="w-1 h-1 bg-white/30 rounded-full" />
-              <span>Factory-Direct Rates</span>
-              <span className="w-1 h-1 bg-white/30 rounded-full" />
-              <span>Pan-India Shipping</span>
-            </span>
-          ))}
+      {/* Top Utility Bar */}
+      <div className="bg-black text-white py-1.5 px-6 md:px-12 flex justify-between items-center overflow-hidden">
+        <div className="flex-1 overflow-hidden whitespace-nowrap">
+          <div className="flex animate-marquee gap-12 text-[10px] md:text-[11px] font-medium uppercase tracking-tight opacity-40">
+            {[...Array(5)].map((_, i) => (
+              <span key={i} className="flex items-center gap-4">
+                <span>15+ Years in Wholesale</span>
+                <span className="w-1 h-1 bg-white/30 rounded-full" />
+                <span>Ready Stock Always</span>
+                <span className="w-1 h-1 bg-white/30 rounded-full" />
+                <span>Pan-India Shipping</span>
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="hidden sm:flex items-center gap-6 ml-6 relative z-10 shrink-0">
+          <Link to="/shipping-policy" className="text-[10px] md:text-[11px] font-bold uppercase tracking-widest hover:text-white/60 transition-colors">Shipping & Returns</Link>
+          <a href="tel:+919354092323" className="text-[10px] md:text-[11px] font-bold uppercase tracking-widest hover:text-white/60 transition-colors">+91 93540 92323</a>
         </div>
       </div>
 
@@ -304,7 +307,7 @@ export const Navbar = () => {
           >
             <Search size={18} />
           </button>
-          <Link to="/catalog">
+          <Link to="/catalog" className="hidden xl:block">
             <AnimatedButton variant={navScrolled ? "black" : "white"} className="px-6 py-2.5">
               Shop all items
             </AnimatedButton>
@@ -321,9 +324,9 @@ export const Navbar = () => {
         animate={{ scale: 1, opacity: 1 }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="fixed bottom-8 right-8 z-[60] bg-[#25D366] text-white p-4 rounded-full shadow-2xl flex items-center justify-center group"
+        className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[60] bg-[#25D366] text-white p-3 md:p-4 rounded-full shadow-2xl flex items-center justify-center group"
       >
-        <MessageCircle size={32} fill="currentColor" />
+        <MessageCircle size={24} className="md:size-[32px]" fill="currentColor" />
         <span className="absolute right-full mr-4 bg-white text-black px-4 py-2 rounded-xl text-sm font-bold shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
           Chat with Warehouse
         </span>
@@ -413,7 +416,6 @@ export const Footer = () => {
               <Link to="/about" className="hover:text-white transition-colors">About Us</Link>
               <Link to="/catalog" className="hover:text-white transition-colors">Product Catalog</Link>
               <Link to="/wholesale-inquiry" className="hover:text-white transition-colors">Wholesale Inquiry</Link>
-              <Link to="/fabric-guide" className="hover:text-white transition-colors">Fabric Guide</Link>
               <Link to="/shipping-policy" className="hover:text-white transition-colors">Shipping & Returns</Link>
               <Link to="/contact" className="hover:text-white transition-colors">Contact</Link>
             </div>

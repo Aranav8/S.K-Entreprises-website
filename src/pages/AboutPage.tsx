@@ -39,13 +39,13 @@ export default function AboutPage() {
           />
         </div>
 
-        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6 pt-[80px]">
+        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6 pt-12 md:pt-20">
           <div className="flex flex-col items-center text-center gap-4 max-w-3xl">
             <div className="bg-white/15 backdrop-blur-xs px-4 py-1 rounded-full flex items-center gap-2 border border-white/10">
               <div className="bg-white text-black text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">ABOUT</div>
               <span className="text-white text-sm font-medium tracking-tight">Know about S.K Enterprises</span>
             </div>
-            <h1 className="text-white text-4xl md:text-6xl font-medium tracking-tighter leading-tight whitespace-nowrap">
+            <h1 className="text-white text-4xl md:text-6xl font-medium tracking-tighter leading-tight">
               Timeless quality, modern wholesale.
             </h1>
             <p className="text-white/70 text-base md:text-lg font-light tracking-tight max-w-2xl">

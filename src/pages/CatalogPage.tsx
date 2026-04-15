@@ -109,7 +109,7 @@ export default function CatalogPage() {
 
       {/* Catalog Controls */}
       <section className="relative z-30 bg-white border-b border-black/5 py-4 md:py-6 px-6 md:px-12">
-        <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-6 md:gap-8">
+        <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
           {/* Category Filter */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 no-scrollbar w-full lg:w-auto px-2 lg:px-0">
             {categories.map((cat) => (
@@ -128,8 +128,8 @@ export default function CatalogPage() {
           </div>
 
           {/* Search & Actions */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
-            <div className="relative w-full lg:w-64">
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+            <div className="relative w-full md:w-64">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-black/30" size={16} />
               <input 
                 type="text" 

@@ -148,7 +148,7 @@ export default function WholesaleInquiryPage() {
     <div className="relative">
       <SEO title="Wholesale Application" description="Apply for a wholesale partnership with S.K Enterprises and unlock exclusive factory-direct pricing on premium men's shirts." />
       {/* Hero Section */}
-      <section className="relative h-[50vh] min-h-[450px] flex flex-col justify-center items-center overflow-hidden">
+      <section className="relative h-[40vh] md:h-[50vh] min-h-[400px] flex flex-col justify-center items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src="/images/heroes/wholesale-hero.png"
@@ -167,7 +167,7 @@ export default function WholesaleInquiryPage() {
           />
         </div>
 
-        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6 pt-[80px]">
+        <div className="relative z-10 w-full max-w-screen-xl px-6 flex flex-col items-center gap-6 pt-12 md:pt-20">
           <div className="flex flex-col items-center text-center gap-4 max-w-3xl">
             <div className="bg-white/15 backdrop-blur-xs px-4 py-1 rounded-full flex items-center gap-2 border border-white/10">
               <div className="bg-white text-black text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">B2B ENQUIRY</div>
@@ -212,8 +212,8 @@ export default function WholesaleInquiryPage() {
             <div className="bg-white p-8 md:p-12 rounded-[40px] shadow-sm">
               <div className="flex flex-col gap-8 mb-10">
                 <div className="flex flex-col gap-2">
-                  <h2 className="text-3xl font-bold tracking-tight">Wholesale Application</h2>
-                  <p className="text-dove-gray">Please provide your business details. Our sales representative will contact you with a customized quote within 24 hours.</p>
+                  <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Wholesale Application</h2>
+                  <p className="text-dove-gray text-sm md:text-base">Please provide your business details. Our sales representative will contact you with a customized quote within 24 hours.</p>
                 </div>
 
                 {/* Selected Product Context */}

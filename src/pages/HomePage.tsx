@@ -378,6 +378,56 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="py-32 bg-gallery/30">
+        <div className="max-w-screen-xl mx-auto px-6 md:px-12">
+          <div className="flex flex-col items-center text-center gap-6 mb-20">
+            <div className="bg-white px-4 py-1.5 rounded-full flex items-center gap-2 shadow-sm">
+              <BadgeIcon />
+              <span className="text-sm font-medium uppercase tracking-wider">Help Center</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-medium tracking-tight">Frequently Asked Questions</h2>
+          </div>
+
+          <div className="max-w-3xl mx-auto flex flex-col gap-4">
+            {[
+              { 
+                q: "What is the Minimum Order Quantity (MOQ)?", 
+                a: "Our standard MOQ is 48 units (mix of sizes) per style. This ensures we can offer the best factory-direct wholesale pricing for our retail partners." 
+              },
+              { 
+                q: "Do you provide samples?", 
+                a: "Yes, we can provide single-piece samples for quality checks at a nominal cost before you place a full bulk order. Contact us to request a sample of any style." 
+              },
+              { 
+                q: "How long does shipping take?", 
+                a: "We dispatch all ready-stock orders within 24 hours of payment confirmation. Delivery typically takes 3-7 business days across India depending on your location." 
+              },
+              { 
+                q: "Are prices inclusive of GST?", 
+                a: "No, all listed prices are wholesale rates. GST (5% or 12% depending on the invoice value) and shipping charges are calculated and added to the final proforma invoice." 
+              },
+              { 
+                q: "Can I visit your warehouse?", 
+                a: "Absolutely. We welcome our retail partners to visit our Gandhi Nagar warehouse in New Delhi for a face-to-face consultation and to see our latest collections in person." 
+              }
+            ].map((item, i) => (
+              <details key={i} className="group bg-white rounded-[32px] border border-black/5 overflow-hidden transition-all duration-500">
+                <summary className="flex items-center justify-between p-8 cursor-pointer list-none list-inside">
+                  <span className="text-xl font-bold tracking-tight">{item.q}</span>
+                  <div className="w-10 h-10 bg-gallery rounded-full flex items-center justify-center group-open:rotate-180 transition-transform duration-500">
+                    <ChevronRight size={20} className="rotate-90" />
+                  </div>
+                </summary>
+                <div className="px-8 pb-8 text-dove-gray text-lg leading-relaxed">
+                  {item.a}
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Partners Logo Strip */}
       <section className="py-20 bg-gallery/50 border-y border-black/5 overflow-hidden">
         <div className="max-w-screen-xl mx-auto px-6 md:px-12">

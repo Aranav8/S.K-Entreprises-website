@@ -83,8 +83,6 @@ export default function ProductDetailPage() {
   const product = products.find(p => p.id === Number(id));
   const [activeImage, setActiveImage] = useState(product?.image || "");
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
-  const [selectedTier, setSelectedTier] = useState(0);
-  const [selectedSize, setSelectedSize] = useState("M");
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({
     S: 0, M: 0, L: 0, XL: 0, XXL: 0
   });
@@ -118,7 +116,7 @@ export default function ProductDetailPage() {
   ];
 
   return (
-    <div className="pt-40 pb-24">
+    <div className="pt-24 md:pt-40 pb-24">
       <SEO title={product.title} description={product.description} />
       <SizeGuideModal isOpen={isSizeGuideOpen} onClose={() => setIsSizeGuideOpen(false)} />
       <div className="max-w-screen-xl mx-auto px-6 md:px-12">
@@ -144,7 +142,7 @@ export default function ProductDetailPage() {
                 <button 
                   key={i}
                   onClick={() => setActiveImage(img)}
-                  className={`w-24 h-24 rounded-2xl overflow-hidden border-2 transition-all shrink-0 ${activeImage === img ? 'border-black' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                  className={`w-20 h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden border-2 transition-all shrink-0 ${activeImage === img ? 'border-black' : 'border-transparent opacity-60 hover:opacity-100'}`}
                 >
                   <img src={img} alt={`${product.title} view ${i}`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                 </button>
@@ -189,14 +187,32 @@ export default function ProductDetailPage() {
             {/* Bulk Order Calculator */}
             <div className="bg-gallery p-6 md:p-10 rounded-[40px] flex flex-col gap-8 border border-black/5">
               <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2 text-black/40">
-                  <Sparkles size={16} />
-                  <span className="text-sm font-bold uppercase tracking-widest">Bulk Order Calculator</span>
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2 text-black/40">
+                    <Sparkles size={16} />
+                    <span className="text-sm font-bold uppercase tracking-widest">Wholesale Configurator</span>
+                  </div>
+                  <button 
+                    onClick={() => setIsSizeGuideOpen(true)}
+                    className="text-xs font-bold underline underline-offset-4 hover:opacity-60 transition-opacity"
+                  >
+                    Size Guide
+                  </button>
                 </div>
-                <h3 className="text-2xl font-bold tracking-tight">Calculate Your Savings</h3>
+                <h3 className="text-2xl font-bold tracking-tight">Select Sizes & Quantities</h3>
               </div>
 
-              <div className="grid grid-cols-5 gap-3">
+              {/* Pricing Tiers Display */}
+              <div className="grid grid-cols-3 gap-2 pb-4 border-b border-black/5">
+                {pricingTiers.map((tier, i) => (
+                  <div key={i} className="flex flex-col gap-1 p-3 bg-white/50 rounded-2xl border border-black/5">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-black/40">{tier.range}</span>
+                    <span className="font-bold text-base">₹{tier.price}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-5 gap-3">
                 {["S", "M", "L", "XL", "XXL"].map(size => (
                   <div key={size} className="flex flex-col gap-2">
                     <span className="text-center text-xs font-bold text-black/40">{size}</span>
@@ -267,29 +283,7 @@ export default function ProductDetailPage() {
               })()}
             </div>
 
-            {/* Size Chart */}
-            <div className="flex flex-col gap-4">
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-bold uppercase tracking-widest text-black/40">Available Sizes</span>
-                <button 
-                  onClick={() => setIsSizeGuideOpen(true)}
-                  className="text-xs font-bold underline underline-offset-4 hover:opacity-60 transition-opacity"
-                >
-                  Size Guide
-                </button>
-              </div>
-              <div className="flex gap-3">
-                {["S", "M", "L", "XL", "XXL"].map(size => (
-                  <button 
-                    key={size} 
-                    onClick={() => setSelectedSize(size)}
-                    className={`w-12 h-12 rounded-xl border flex items-center justify-center font-bold transition-all ${selectedSize === size ? 'bg-black text-white border-black shadow-lg' : 'border-black/10 hover:border-black/30'}`}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
+
 
             {(() => {
                 const totalQty = (Object.values(quantities) as number[]).reduce((a, b) => a + b, 0);

@@ -16,8 +16,8 @@ export const products = [
     },
     gallery: [
       "/images/products/formal-1.png",
-      "/images/products/formal-1.png",
-      "/images/products/formal-1.png"
+      "/images/products/formal-1-2.png",
+      "/images/products/formal-1-3.png"
     ]
   },
   { 
@@ -37,7 +37,7 @@ export const products = [
     },
     gallery: [
       "/images/products/formal-2.png",
-      "/images/products/formal-2.png"
+      "/images/products/formal-1.png"
     ]
   },
   { 
@@ -57,7 +57,7 @@ export const products = [
     },
     gallery: [
       "/images/products/linen-1.png",
-      "/images/products/linen-1.png"
+      "/images/products/linen-2.png"
     ]
   },
   { 
@@ -76,7 +76,8 @@ export const products = [
       collar: "Standard Point"
     },
     gallery: [
-      "/images/products/linen-2.png"
+      "/images/products/linen-2.png",
+      "/images/products/linen-1.png"
     ]
   },
   { 
@@ -95,7 +96,8 @@ export const products = [
       collar: "Cuban Collar"
     },
     gallery: [
-      "/images/products/print-1.png"
+      "/images/products/print-1.png",
+      "/images/products/print-2.png"
     ]
   },
   { 
@@ -114,7 +116,8 @@ export const products = [
       collar: "Short Spread"
     },
     gallery: [
-      "/images/products/print-2.png"
+      "/images/products/print-2.png",
+      "/images/products/print-1.png"
     ]
   },
   { 
@@ -133,7 +136,8 @@ export const products = [
       collar: "Standard Point"
     },
     gallery: [
-      "/images/products/basic-1.png"
+      "/images/products/basic-1.png",
+      "/images/products/basic-2.png"
     ]
   },
   { 
@@ -152,7 +156,9 @@ export const products = [
       collar: "Button-down"
     },
     gallery: [
-      "/images/products/basic-2.png"
+      "/images/products/basic-2.png",
+      "/images/products/basic-1.png"
     ]
   }
 ];
+
